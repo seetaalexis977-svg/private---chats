@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Private Chats V3</title>
+<style>
+*{box-sizing:border-box;font-family:Arial}body{margin:0;background:#0b0b12;color:white}
+.screen{display:none;padding:18px;max-width:460px;margin:auto;min-height:100vh}.active{display:block}
+.logo{font-size:55px;text-align:center;margin-top:40px}.title{text-align:center;font-size:32px;font-weight:800}
+.sub{text-align:center;color:#aaa;font-size:13px}.btn{width:100%;padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:700;margin-top:10px;background:#1ed760;color:#000}
+.btn2{background:transparent;color:#1ed760;border:2px solid #1ed760}
+input,select{width:100%;padding:13px;margin-top:9px;border-radius:10px;border:1px solid #333;background:#1a1a26;color:white;font-size:15px}
+label{margin-top:12px;display:block;color:#ccc;font-size:13px}
+.tabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:#15151f;padding:10px;max-width:460px;margin:auto}
+.tabs button{flex:1;background:0;border:0;color:#aaa;font-size:14px}.tabs button.on{color:#1ed760;font-weight:700}
+.chat{background:#1a1a26;padding:12px;border-radius:12px;margin-top:9px;display:flex;gap:10px;align-items:center;cursor:pointer}
+.avatar{width:46px;height:46px;border-radius:50%;background:#1ed760;color:#000;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.demo{background:#1ed760;color:#000;padding:11px;border-radius:10px;text-align:center;font-weight:700;margin-top:10px}
+.msg{padding:9px 12px;border-radius:12px;margin:6px 0;max-width:80%;font-size:15px}.mine{background:#1ed760;color:#000;margin-left:auto}.theirs{background:#23233a}
+.msgbox{display:flex;gap:8px;position:fixed;bottom:65px;left:0;right:0;max-width:460px;margin:auto;padding:10px;background:#0b0b12}
+.msgbox input{margin:0}.msgbox button{padding:12px 16px;border-radius:10px;border:0;background:#1ed760;font-weight:700}
+.post{background:#1a1a26;padding:12px;border-radius:12px;margin-top:10px}
+</style></head><body>
+<div id="splash" class="screen active"><div class="logo">🛡️💬</div><div class="title">Private Chats</div><p class="sub">Secure • Private • Encrypted • V3 REAL LINK</p>
+<button class="btn" onclick="show('signup')">Create Account</button>
+<button class="btn btn2" onclick="show('login')">Login</button><p class="sub">V3 - Friends can join with real link</p></div>
+<div id="signup" class="screen"><h2>Create Account</h2>
+<label>Name</label><input id="name" placeholder="Your name">
+<label>Country</label><select id="country"><option value="+27">South Africa +27</option><option value="+260">Zambia +260</option><option value="+264">Namibia +264</option><option value="+263">Zimbabwe +263</option><option value="+267">Botswana +267</option><option value="+268">Eswatini +268</option><option value="+266">Lesotho +266</option><option value="+258">Mozambique +258</option></select>
+<label>Phone</label><input id="phone" placeholder="68 138 1702">
+<label>Email</label><input id="email" placeholder="you@gmail.com">
+<label>Password</label><input id="pass" type="password" placeholder="******">
+<button class="btn" onclick="sendCode()">Continue</button><button class="btn btn2" onclick="show('splash')">Back</button></div>
+<div id="verify" class="screen"><h2>Verify Your Number</h2><p class="sub" id="verifyText"></p><div class="demo" id="demoCode"></div>
+<div style="display:flex;gap:8px;justify-content:center;margin:15px 0"><input id="c1" maxlength="1" style="width:48px;text-align:center;font-size:22px"><input id="c2" maxlength="1" style="width:48px;text-align:center;font-size:22px"><input id="c3" maxlength="1" style="width:48px;text-align:center;font-size:22px"><input id="c4" maxlength="1" style="width:48px;text-align:center;font-size:22px"><input id="c5" maxlength="1" style="width:48px;text-align:center;font-size:22px"><input id="c6" maxlength="1" style="width:48px;text-align:center;font-size:22px"></div>
+<button class="btn" onclick="doVerify()">Verify & Continue</button></div>
+<div id="profile" class="screen"><h2>Add Profile Pic</h2><input type="file" accept="image/*" onchange="previewPic(event)"><div style="text-align:center;margin:12px"><img id="picPreview" style="width:120px;height:120px;border-radius:50%;object-fit:cover;background:#222"></div>
+<button class="btn" onclick="finishSignup()">Create My Real Account</button><p class="sub" id="signupStatus"></p></div>
+<div id="login" class="screen"><h2>Login</h2><input id="loginEmail" placeholder="Email"><input id="loginPass" type="password" placeholder="Password"><button class="btn" onclick="doLogin()">Login</button><p class="sub" id="loginStatus"></p><button class="btn btn2" onclick="show('splash')">Back</button></div>
+<div id="main" class="screen" style="padding-bottom:130px">
+<div id="tab-chats"><h2>Chats</h2><input placeholder="🔍 Search chats..." oninput="filterUsers(this.value)"><div id="usersList"></div>
+<button class="btn" onclick="invite()">+ Invite Friends - Share Link</button><button class="btn btn2" onclick="createGroup()">+ Create Group</button><p class="sub" id="shareLink"></p></div>
+<div id="tab-calls" style="display:none"><h2>Calls</h2><p class="sub">No calls yet</p><button class="btn" onclick="alert('Calling... (Demo in V3, Real calls in V4)')">📞 Start Call</button></div>
+<div id="tab-posts" style="display:none"><h2>Posts</h2><input id="postText" placeholder="What's on your mind?"><button class="btn" onclick="makePost()">Post</button><div id="posts"></div></div>
+<div id="tab-me" style="display:none"><h2>Me</h2><div style="text-align:center"><img id="mePic" style="width:100px;height:100px;border-radius:50%;object-fit:cover;background:#222"><p id="meName"></p><p id="mePhone" style="color:#aaa"></p><p id="meEmail" style="color:#aaa"></p></div><button class="btn" onclick="alert('Saved!')">Save Changes</button><button class="btn btn2" onclick="doLogout()">Logout</button></div>
+<div class="tabs"><button class="on" onclick="tab('chats',this)">💬<br>Chats</button><button onclick="tab('calls',this)">📞<br>Calls</button><button onclick="tab('posts',this)">📄<br>Posts</button><button onclick="tab('me',this)">👤<br>Me</button></div></div>
+<div id="chatroom" class="screen" style="padding-bottom:130px"><button class="btn btn2" onclick="show('main')">← Back</button><h2 id="chatWith">Chat</h2><div id="messages"></div><div class="msgbox"><input id="msgInput" placeholder="Type a message..."><button onclick="sendMsg()">Send</button></div></div>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getFirestore,collection,addDoc,doc,setDoc,getDocs,query,orderBy,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
+const app=initializeApp(firebaseConfig);const auth=getAuth(app);const db=getFirestore(app);
+let myCode="",picURL="",currentUser=null,currentChatId=null,allUsers=[];
+window.show=(id)=>{document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')};
+window.tab=(t,btn)=>{['chats','calls','posts','me'].forEach(x=>document.getElementById('tab-'+x).style.display='none');document.getElementById('tab-'+t).style.display='block';document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');if(t==='posts') loadPosts()};
+window.sendCode=()=>{let phone=document.getElementById('phone').value;if(!phone) return alert('Enter phone');myCode=Math.floor(100000+Math.random()*900000).toString();document.getElementById('verifyText').innerText="Code for "+document.getElementById('country').value+" "+phone;document.getElementById('demoCode').innerText="Demo Code: "+myCode;show('verify')};
+window.doVerify=()=>{let e=["c1","c2","c3","c4","c5","c6"].map(id=>document.getElementById(id).value).join('');if(e===myCode) show('profile');else alert('Wrong! Code is '+myCode)};
+window.previewPic=(e)=>{let r=new FileReader();r.onload=()=>{document.getElementById('picPreview').src=r.result;picURL=r.result};r.readAsDataURL(e.target.files[0])};
+window.finishSignup=async()=>{let email=document.getElementById('email').value,pass=document.getElementById('pass').value,name=document.getElementById('name').value,phone=document.getElementById('country').value+" "+document.getElementById('phone').value;document.getElementById('signupStatus').innerText="Creating account...";try{let cred=await createUserWithEmailAndPassword(auth,email,pass);await setDoc(doc(db,"users",cred.user.uid),{name,phone,email,pic:picURL||"",created:serverTimestamp()});document.getElementById('signupStatus').innerText="Account Created! Welcome "+name;enterApp(cred.user.uid,name,phone,email,picURL)}catch(err){if(err.code==='auth/email-already-in-use'){document.getElementById('signupStatus').innerText="Email already exists! Go to Login."}else document.getElementById('signupStatus').innerText=err.message}};
+window.doLogin=async()=>{let email=document.getElementById('loginEmail').value,pass=document.getElementById('loginPass').value;try{let cred=await signInWithEmailAndPassword(auth,email,pass);let snap=await getDocs(query(collection(db,"users")));let me=null;snap.forEach(d=>{if(d.id===cred.user.uid) me=d.data()});enterApp(cred.user.uid,me?.name||"User",me?.phone||"",email,me?.pic||"")}catch(err){document.getElementById('loginStatus').innerText=err.message}};
+window.doLogout=async()=>{await signOut(auth);show('splash')};
+function enterApp(uid,name,phone,email,pic){currentUser={uid,name,phone,email,pic};document.getElementById('meName').innerText=name;document.getElementById('mePhone').innerText=phone;document.getElementById('meEmail').innerText=email;if(pic) document.getElementById('mePic').src=pic;show('main');loadUsers();loadPosts()};
+window.invite=()=>{let link=location.href;document.getElementById('shareLink').innerText="Your App Link: "+link;let text="Hey! Join my app Private Chats 🛡️💬 Click this link, Create Account, then find me and chat! Link: "+link;let wa="https://wa.me/?text="+encodeURIComponent(text);window.open(wa,"_blank");alert("Now pick a friend on WhatsApp and send!")};
+window.createGroup=async()=>{let n=prompt("Group name:");if(!n) return;await addDoc(collection(db,"groups"),{name:n,by:currentUser.name,created:serverTimestamp()});alert("Group '"+n+"' created!")};
+async function loadUsers(){let snap=await getDocs(collection(db,"users"));allUsers=[];snap.forEach(d=>{if(d.id!==currentUser?.uid) allUsers.push({id:d.id,...d.data()})});renderUsers(allUsers)};
+function renderUsers(list){document.getElementById('usersList').innerHTML=list.map(u=>`<div class="chat" onclick="openChat('${u.id}','${u.name.replace(/'/g,"")}')"><div class="avatar">${u.pic?`<img src="${u.pic}">`:u.name[0]}</div><div><b>${u.name}</b><br><span style="color:#aaa">${u.phone}</span></div></div>`).join('')||'<p class="sub">No friends yet. Invite friends!</p>'};
+window.filterUsers=(v)=>{renderUsers(allUsers.filter(u=>u.name.toLowerCase().includes(v.toLowerCase())))};
+window.openChat=(uid,name)=>{currentChatId=[currentUser.uid,uid].sort().join('_');document.getElementById('chatWith').innerText="Chat with "+name;show('chatroom');let q=query(collection(db,"chats",currentChatId,"messages"),orderBy("created"));onSnapshot(q,(snap)=>{document.getElementById('messages').innerHTML="";snap.forEach(d=>{let m=d.data();let div=document.createElement('div');div.className='msg '+(m.from===currentUser.uid?'mine':'theirs');div.innerText=m.text;document.getElementById('messages').appendChild(div)})})};
+window.sendMsg=async()=>{let t=document.getElementById('msgInput').value;if(!t) return;await addDoc(collection(db,"chats",currentChatId,"messages"),{text:t,from:currentUser.uid,fromName:currentUser.name,created:serverTimestamp()});document.getElementById('msgInput').value=''};
+window.makePost=async()=>{let t=document.getElementById('postText').value;if(!t) return;await addDoc(collection(db,"posts"),{text:t,by:currentUser.name,created:serverTimestamp()});document.getElementById('postText').value='';loadPosts()};
+async function loadPosts(){let q=query(collection(db,"posts"),orderBy("created","desc"));let snap=await getDocs(q);document.getElementById('posts').innerHTML="";snap.forEach(d=>{let p=d.data();document.getElementById('posts').innerHTML+=`<div class="post"><b>${p.by}</b><br>${p.text}</div>`})};
+</script></body></html>
