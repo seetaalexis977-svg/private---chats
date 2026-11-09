@@ -2,151 +2,143 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Private Chats V2</title>
+<title>Private Chats V4</title>
 <style>
-body{margin:0;font-family:Arial;background:#ece5dd}
-.top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;display:flex;justify-content:space-between}
+body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
+.top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
 .box{background:white;margin:10px;padding:14px;border-radius:12px}
 input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
 button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
-.tabs{display:flex;background:white;margin:10px;border-radius:10px;overflow:hidden}
-.tabs div{flex:1;text-align:center;padding:12px;font-weight:bold;cursor:pointer}
-.tabs .on{color:#075e54;border-bottom:3px solid #075e54}
-.item{padding:12px;border-bottom:1px solid #eee}
-.item b{display:block}
-.item span{color:#666;font-size:13px}
-.row{display:flex;gap:6px;margin-top:6px}
-.row button{padding:8px;font-size:13px}
+button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff}
+.logo{text-align:center;padding:40px 20px 10px}
+.logo h1{font-size:42px;margin:0;color:#075e54}
+.item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
+.row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
 .msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
-.msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%}
-.me{background:#dcf8c6;margin-left:auto}
+.msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
 video{width:100%;background:black;border-radius:10px;margin-top:8px}
 .callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
+.bottom div{flex:1;text-align:center;padding:12px 2px;font-weight:bold;font-size:13px;cursor:pointer;color:#888}
+.bottom div.on{color:#075e54;border-top:3px solid #075e54}
+.hidden{display:none}
+.ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
+.ad small{display:block;font-weight:normal}
 </style>
 </head>
 <body>
-<div class="top"><span>Private Chats V2 🔥</span><span id="myName">Guest</span></div>
-<div class="box" id="authBox">
-<h3>Create Account / Login</h3>
-<input id="name" placeholder="Full Name">
-<input id="phone" placeholder="Phone e.g +27721234567">
-<select id="province"><option value="">Province</option><option>Limpopo</option><option>Gauteng</option><option>Mpumalanga</option><option>North West</option><option>Free State</option><option>KwaZulu-Natal</option><option>Eastern Cape</option><option>Western Cape</option><option>Northern Cape</option></select>
-<select id="language"><option value="">Language</option><option>Sotho</option><option>Sepedi</option><option>Zulu</option><option>Xhosa</option><option>Tswana</option><option>Venda</option><option>Tsonga</option><option>Afrikaans</option><option>English</option><option>Swati</option><option>Ndebele</option></select>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="register()">CREATE ACCOUNT</button>
-<button onclick="login()" style="background:#075e54">LOGIN</button>
-<p id="msg" style="text-align:center;font-size:13px"></p>
+<div id="splash">
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp</p></div>
+<div class="ad">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V4</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN</button><p style="text-align:center;font-size:13px;color:#888">V4 - Add Friend + Invite Friend</p></div>
 </div>
-<div class="tabs"><div id="tab1" class="on" onclick="showTab('friends')">Friends</div><div id="tab2" onclick="showTab('requests')">Requests</div><div id="tab3" onclick="showTab('group')">Group</div></div>
-<div class="box" id="friendsView"><h3>All People - Add Friend</h3><div id="userList">Login first...</div></div>
-<div class="box" id="requestsView" style="display:none"><h3>Friend Requests</h3><div id="reqList">No requests yet</div></div>
-<div class="box" id="groupView" style="display:none"><div class="item" onclick="openGroup()"><b>🌍 Private Chats Group</b><span>Everyone - Tap to chat</span></div></div>
-<div class="box" id="chatbox" style="display:none">
-<h3 id="chatTitle">Chat</h3>
-<div class="msgs" id="msgs"></div>
-<input id="msgInput" placeholder="Type message...">
-<button onclick="sendMsg()">SEND</button>
-<div class="row"><button onclick="startCall(false)" style="background:#075e54">📞 VOICE CALL</button><button onclick="startCall(true)" style="background:#128c7e">🎥 VIDEO CALL</button></div>
-<button onclick="closeChat()" style="background:#333">BACK</button>
+
+<div id="register" class="hidden">
+<div class="top">Create Account</div>
+<div class="box">
+<select id="country"><option value="">Choose Country</option><option>South Africa</option><option>Lesotho</option><option>Zimbabwe</option><option>Botswana</option><option>Eswatini</option><option>Namibia</option><option>Mozambique</option><option>Zambia</option><option>Malawi</option><option>Nigeria</option><option>Kenya</option><option>Other</option></select>
+<input id="rName" placeholder="Full Name">
+<input id="rPhone" placeholder="Phone e.g +27681381702">
+<input id="rEmail" placeholder="Email">
+<input id="rPass" type="password" placeholder="Password">
+<button onclick="doRegister()">CREATE ACCOUNT → VERIFY</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="rMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="login" class="hidden">
+<div class="top">Login</div>
+<div class="box">
+<input id="lEmail" placeholder="Email">
+<input id="lPass" type="password" placeholder="Password">
+<button class="dark" onclick="doLogin()">LOGIN</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="lMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="verify" class="hidden">
+<div class="top">Verification</div>
+<div class="box"><h3>Enter 6-digit Code</h3><p>For testing, your code is:</p><h2 id="showCode" style="text-align:center;color:#075e54;letter-spacing:5px">------</h2>
+<input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
+<button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
+
+<!-- NEXT 1 -->
+<div id="next1" class="hidden">
+<div class="top">Welcome!</div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><p>Your number will be used so friends who have your number can find you.</p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+
+<!-- NEXT 2 -->
+<div id="next2" class="hidden">
+<div class="top">Invite Friends</div>
+<div class="box"><h2>Invite Your Friends!</h2><p>Send them your link. They create account, then you ADD each other by phone number.</p><button class="blue" onclick="inviteFriend()">📩 INVITE FRIENDS - COPY LINK</button><p id="inviteMsg" style="text-align:center"></p><button class="dark" onclick="enterApp()">ENTER APP →</button></div></div>
+
+<div id="mainApp" class="hidden">
+<div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
+<div class="ad">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+
+<div id="tab-chats">
+<div class="box"><h3>Chats</h3>
+<button class="blue" onclick="showAddFriend()">➕ ADD FRIEND BY PHONE NUMBER</button>
+<button onclick="inviteFriend()">📩 INVITE FRIENDS</button>
+<div id="addFriendBox" class="hidden"><input id="friendPhone" placeholder="Type friend phone e.g +27..."><button class="dark" onclick="doAddFriend()">SEARCH & ADD FRIEND</button><p id="addMsg"></p></div>
+<p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp. If your friend already created account, you will see them here.</p>
+<div id="userList">Loading...</div></div>
+<div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
 </div>
-<div class="callbox" id="callbox">
-<h3 id="callTitle">Incoming Call...</h3>
-<video id="localVideo" autoplay muted playsinline></video>
-<video id="remoteVideo" autoplay playsinline></video>
-<div class="row"><button onclick="acceptCall()" style="background:#25d366">✅ ACCEPT</button><button onclick="endCall()" style="background:red">❌ END</button></div>
+
+<div id="tab-calls" class="hidden">
+<div class="box"><h3>Calls - Real Voice & Video</h3><div id="callUserList">Loading...</div></div>
+<div class="box"><h3>Group Call</h3><button onclick="startGroupCall()">🎥 START GROUP VIDEO CALL</button><button class="dark" onclick="startGroupCallVoice()">📞 START GROUP VOICE CALL</button></div>
+<div class="callbox" id="callbox"><h3 id="callTitle">Calling...</h3><video id="localVideo" autoplay muted playsinline></video><video id="remoteVideo" autoplay playsinline></video><div class="row"><button onclick="acceptCall()" style="background:#25d366">✅ ACCEPT</button><button onclick="endCall()" style="background:red">❌ END</button></div></div>
 </div>
+
+<div id="tab-post" class="hidden">
+<div class="box"><h3>Post / Insert</h3><input id="postInput" placeholder="What do you want to post?"><button onclick="doPost()">POST</button></div>
+<div class="box"><h3>All Posts</h3><div id="postList">No posts yet</div></div>
+</div>
+
+<div id="tab-me" class="hidden">
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p><b>Your App Link to share:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+</div>
+
+<div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapshot, addDoc, getDocs, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-const firebaseConfig = {
-  apiKey: "AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",
-  authDomain: "private-chats-8a260.firebaseapp.com",
-  projectId: "private-chats-8a260",
-  storageBucket: "private-chats-8a260.firebasestorage.app",
-  messagingSenderId: "531756135269",
-  appId: "1:531756135269:web:b438c25501fca63a9f278c",
-  measurementId: "G-YE67W66CZR"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-let myUid="", myName="", currentChatId="", currentFriendUid="", currentCallId="", pc=null, localStream=null, isVideo=false, incomingOffer=null;
-function showMsg(t){document.getElementById('msg').innerText=t}
-window.register=async function(){
-  const name=document.getElementById('name').value, phone=document.getElementById('phone').value, province=document.getElementById('province').value, language=document.getElementById('language').value, email=document.getElementById('email').value, pass=document.getElementById('password').value;
-  if(!name||!phone||!province||!language||!email||!pass){showMsg("Please fill everything");return;}
-  try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,province,language,email,created:Date.now()}); showMsg("Account created! Welcome "+name);}catch(e){showMsg(e.message)}
-}
-window.login=async function(){
-  try{await signInWithEmailAndPassword(auth,document.getElementById('email').value,document.getElementById('password').value); showMsg("Logged in!");}catch(e){showMsg(e.message)}
-}
-onAuthStateChanged(auth, async (user)=>{
-  if(!user) return; myUid=user.uid;
-  const snap=await getDoc(doc(db,"users",myUid)); myName=snap.exists()?snap.data().name:"Me";
-  document.getElementById('myName').innerText=myName;
-  loadUsers(); loadRequests(); listenForCalls();
-});
-async function loadUsers(){
-  const q=await getDocs(collection(db,"users")); let html="";
-  q.forEach(d=>{ if(d.id===myUid) return; const u=d.data();
-    html+=`<div class="item"><b>${u.name}</b><span>${u.province} • ${u.language} • ${u.phone}</span><div class="row"><button onclick="sendFriend('${d.id}')">+ ADD FRIEND</button><button onclick="openChat('${d.id}','${u.name}')" style="background:#075e54">💬 CHAT</button></div></div>`;
-  });
-  document.getElementById('userList').innerHTML=html||"No other people yet. Invite someone!";
-}
-window.sendFriend=async function(toUid){ await addDoc(collection(db,"friendRequests"),{from:myUid,fromName:myName,to:toUid,status:"pending",time:Date.now()}); alert("Friend request sent!"); }
-function loadRequests(){
-  const q=query(collection(db,"friendRequests"),where("to","==",myUid));
-  onSnapshot(q,(snap)=>{ let html=""; snap.forEach(d=>{ const r=d.data(); if(r.status==="pending") html+=`<div class="item"><b>${r.fromName} wants to be your friend</b><div class="row"><button onclick="acceptFriend('${d.id}','${r.from}')">✅ ACCEPT</button></div></div>`; }); document.getElementById('reqList').innerHTML=html||"No requests yet"; });
-}
-window.acceptFriend=async function(reqId,fromUid){ await updateDoc(doc(db,"friendRequests",reqId),{status:"accepted"}); alert("You are now friends!"); }
-window.showTab=function(t){
-  document.getElementById('tab1').className=t==='friends'?'on':''; document.getElementById('tab2').className=t==='requests'?'on':''; document.getElementById('tab3').className=t==='group'?'on':'';
-  document.getElementById('friendsView').style.display=t==='friends'?'block':'none'; document.getElementById('requestsView').style.display=t==='requests'?'block':'none'; document.getElementById('groupView').style.display=t==='group'?'block':'none';
-}
-window.openChat=function(otherUid,title){ currentFriendUid=otherUid; currentChatId=[myUid,otherUid].sort().join("_"); document.getElementById('chatTitle').innerText=title; document.getElementById('chatbox').style.display="block"; listenMsgs(); }
-window.openGroup=function(){ currentFriendUid="group"; currentChatId="main-group"; document.getElementById('chatTitle').innerText="🌍 Private Chats Group"; document.getElementById('chatbox').style.display="block"; listenMsgs(); }
-function listenMsgs(){ const q=query(collection(db,"chats",currentChatId,"messages"),orderBy("time")); onSnapshot(q,(snap)=>{ let html=""; snap.forEach(d=>{ const m=d.data(); html+=`<div class="msg ${m.sender===myUid?'me':''}"><b>${m.senderName}</b><br>${m.text}</div>`; }); document.getElementById('msgs').innerHTML=html; document.getElementById('msgs').scrollTop=99999; }); }
-window.sendMsg=async function(){ const text=document.getElementById('msgInput').value; if(!text) return; await addDoc(collection(db,"chats",currentChatId,"messages"),{text,sender:myUid,senderName:myName,time:Date.now()}); document.getElementById('msgInput').value=""; }
+const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
+window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
+window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
+window.doLogout=async function(){await signOut(auth); showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; document.getElementById('myNameTop').innerText=myName; loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; document.getElementById('myNameTop').innerText=myName;} loadUsers(); listenForCalls(); loadPosts(); }
+window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); const card=`<div class="item"><b>${u.name} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="openChat('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="startCallFromList('${d.id}','${u.name}',false)">📞 VOICE</button><button onclick="startCallFromList('${d.id}','${u.name}',true)">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+window.openChat=function(otherUid,title){ currentFriendUid=otherUid; currentChatId=otherUid==='main-group'?'main-group':[myUid,otherUid].sort().join("_"); document.getElementById('chatTitle').innerText=title; document.getElementById('chatbox').style.display="block"; const q=query(collection(db,"chats",currentChatId,"messages"),orderBy("time")); onSnapshot(q,(snap)=>{let h=""; snap.forEach(d=>{const m=d.data(); h+=`<div class="msg ${m.sender===myUid?'me':''}"><b>${m.senderName}</b><br>${m.text}</div>`}); document.getElementById('msgs').innerHTML=h; document.getElementById('msgs').scrollTop=99999;}); }
+window.sendMsg=async function(){ const t=document.getElementById('msgInput').value; if(!t) return; await addDoc(collection(db,"chats",currentChatId,"messages"),{text:t,sender:myUid,senderName:myName,time:Date.now()}); document.getElementById('msgInput').value=""; }
 window.closeChat=function(){document.getElementById('chatbox').style.display="none";}
+window.doPost=async function(){ const t=document.getElementById('postInput').value; if(!t) return; await addDoc(collection(db,"posts"),{text:t,by:myName,uid:myUid,time:Date.now()}); document.getElementById('postInput').value=""; loadPosts(); }
+function loadPosts(){ const q=query(collection(db,"posts"),orderBy("time","desc")); onSnapshot(q,(snap)=>{let h=""; snap.forEach(d=>{const p=d.data(); h+=`<div class="item"><b>${p.by}</b><span>${p.text}</span></div>`}); document.getElementById('postList').innerHTML=h||"No posts yet";}); }
+window.showMe=function(){ document.getElementById('myProfile').innerHTML=`<p><b>Name:</b> ${myData.name||''}</p><p><b>Phone:</b> ${myData.phone||''}</p><p><b>Country:</b> ${myData.country||''}</p><p><b>Email:</b> ${myData.email||''}</p>`; }
 const servers={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
-async function createPC(callId){
-  pc=new RTCPeerConnection(servers);
-  localStream=await navigator.mediaDevices.getUserMedia({audio:true, video:isVideo});
-  document.getElementById('localVideo').srcObject=localStream;
-  localStream.getTracks().forEach(t=>pc.addTrack(t,localStream));
-  pc.ontrack=e=>{document.getElementById('remoteVideo').srcObject=e.streams[0]};
-  pc.onicecandidate=e=>{ if(e.candidate) addDoc(collection(db,"calls",callId,"candidates"),{candidate:e.candidate.toJSON(), from:myUid}); };
-  return pc;
-}
-window.startCall=async function(video){
-  if(!currentFriendUid||currentFriendUid==="group"){alert("Open a 1-to-1 chat first to call that person");return;}
-  isVideo=video; document.getElementById('callbox').style.display="block"; document.getElementById('callTitle').innerText=video?"📹 Calling video...":"📞 Calling voice...";
-  const callDoc=await addDoc(collection(db,"calls"),{from:myUid,fromName:myName,to:currentFriendUid,type:video?"video":"voice",status:"ringing",time:Date.now()});
-  currentCallId=callDoc.id; await createPC(currentCallId);
-  const offer=await pc.createOffer(); await pc.setLocalDescription(offer);
-  await updateDoc(doc(db,"calls",currentCallId),{offer:{type:offer.type,sdp:offer.sdp}});
-  onSnapshot(doc(db,"calls",currentCallId), async (snap)=>{ const d=snap.data(); if(d && d.answer && !pc.currentRemoteDescription){ await pc.setRemoteDescription(new RTCSessionDescription(d.answer)); } if(d && d.status==="ended"){ endCall(); } });
-  onSnapshot(collection(db,"calls",currentCallId,"candidates"),(snap)=>{ snap.forEach(async docSnap=>{ const c=docSnap.data(); if(c.from!==myUid){ try{ await pc.addIceCandidate(new RTCIceCandidate(c.candidate)); }catch(e){} } }); });
-}
-function listenForCalls(){
-  const q=query(collection(db,"calls"),where("to","==",myUid),where("status","==","ringing"));
-  onSnapshot(q,(snap)=>{ snap.forEach(d=>{ const data=d.data(); if(data.from===myUid) return; currentCallId=d.id; currentFriendUid=data.from; incomingOffer=data.offer; document.getElementById('callbox').style.display="block"; document.getElementById('callTitle').innerText="📞 "+data.fromName+" is calling you - "+data.type; }); });
-}
-window.acceptCall=async function(){
-  if(!currentCallId) return; isVideo=true; document.getElementById('callTitle').innerText="Connected! Talking...";
-  await createPC(currentCallId);
-  if(incomingOffer){ await pc.setRemoteDescription(new RTCSessionDescription(incomingOffer)); }
-  const answer=await pc.createAnswer(); await pc.setLocalDescription(answer);
-  await updateDoc(doc(db,"calls",currentCallId),{answer:{type:answer.type,sdp:answer.sdp}, status:"connected"});
-  onSnapshot(collection(db,"calls",currentCallId,"candidates"),(snap)=>{ snap.forEach(async docSnap=>{ const c=docSnap.data(); if(c.from!==myUid){ try{ await pc.addIceCandidate(new RTCIceCandidate(c.candidate)); }catch(e){} } }); });
-}
-window.endCall=async function(){
-  if(pc) pc.close(); if(localStream) localStream.getTracks().forEach(t=>t.stop());
-  if(currentCallId){ try{ await updateDoc(doc(db,"calls",currentCallId),{status:"ended"}); }catch(e){} }
-  document.getElementById('callbox').style.display="none"; document.getElementById('localVideo').srcObject=null; document.getElementById('remoteVideo').srcObject=null; currentCallId=""; pc=null;
-}
+async function createPC(callId){ pc=new RTCPeerConnection(servers); localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:isVideo}); document.getElementById('localVideo').srcObject=localStream; localStream.getTracks().forEach(t=>pc.addTrack(t,localStream)); pc.ontrack=e=>{document.getElementById('remoteVideo').srcObject=e.streams[0]}; pc.onicecandidate=e=>{if(e.candidate) addDoc(collection(db,"calls",callId,"candidates"),{candidate:e.candidate.toJSON(),from:myUid})}; return pc; }
+window.startCallFromList=function(uid,name,video){ switchTab('calls'); currentFriendUid=uid; startCall(video,name); }
+window.startCall=async function(video,name){ isVideo=video; document.getElementById('callbox').style.display="block"; document.getElementById('callTitle').innerText=(video?"📹 Video Calling ":"📞 Voice Calling ")+(name||""); const callDoc=await addDoc(collection(db,"calls"),{from:myUid,fromName:myName,to:currentFriendUid,type:video?"video":"voice",status:"ringing",time:Date.now()}); currentCallId=callDoc.id; await createPC(currentCallId); const offer=await pc.createOffer(); await pc.setLocalDescription(offer); await updateDoc(doc(db,"calls",currentCallId),{offer:{type:offer.type,sdp:offer.sdp}}); onSnapshot(doc(db,"calls",currentCallId), async (snap)=>{const d=snap.data(); if(d && d.answer && !pc.currentRemoteDescription){await pc.setRemoteDescription(new RTCSessionDescription(d.answer));} if(d && d.status==="ended") endCall();}); onSnapshot(collection(db,"calls",currentCallId,"candidates"),(snap)=>{snap.forEach(async ds=>{const c=ds.data(); if(c.from!==myUid){try{await pc.addIceCandidate(new RTCIceCandidate(c.candidate))}catch(e){}}})}); }
+window.startGroupCall=function(){ currentFriendUid="group"; startCall(true,"Group"); }
+window.startGroupCallVoice=function(){ currentFriendUid="group"; startCall(false,"Group"); }
+function listenForCalls(){ const q=query(collection(db,"calls"),where("to","==",myUid),where("status","==","ringing")); onSnapshot(q,(snap)=>{snap.forEach(d=>{const data=d.data(); if(data.from===myUid) return; currentCallId=d.id; currentFriendUid=data.from; incomingOffer=data.offer; document.getElementById('callbox').style.display="block"; document.getElementById('callTitle').innerText="📞 "+data.fromName+" is calling you - "+data.type; switchTab('calls');});}); }
+window.acceptCall=async function(){ if(!currentCallId) return; isVideo=true; document.getElementById('callTitle').innerText="Connected! Talking..."; await createPC(currentCallId); if(incomingOffer){await pc.setRemoteDescription(new RTCSessionDescription(incomingOffer));} const answer=await pc.createAnswer(); await pc.setLocalDescription(answer); await updateDoc(doc(db,"calls",currentCallId),{answer:{type:answer.type,sdp:answer.sdp},status:"connected"}); onSnapshot(collection(db,"calls",currentCallId,"candidates"),(snap)=>{snap.forEach(async ds=>{const c=ds.data(); if(c.from!==myUid){try{await pc.addIceCandidate(new RTCIceCandidate(c.candidate))}catch(e){}}})}); }
+window.endCall=async function(){ if(pc) pc.close(); if(localStream) localStream.getTracks().forEach(t=>t.stop()); if(currentCallId){try{await updateDoc(doc(db,"calls",currentCallId),{status:"ended"})}catch(e){}} document.getElementById('callbox').style.display="none"; document.getElementById('localVideo').srcObject=null; document.getElementById('remoteVideo').srcObject=null; currentCallId=""; pc=null; }
 </script>
 </body>
-                                                                                </html>
+                       </html>
