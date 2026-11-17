@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Private Chats V6 - Background Ring</title>
+<title>Private Chats V7 - Diamond</title>
 <style>
 body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
 .top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
@@ -10,12 +10,14 @@ body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
 input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
 button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
 button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff} button.orange{background:#ff9800}
+button.diamond{background:linear-gradient(45deg,#00e5ff,#7c4dff,#ff00e5);box-shadow:0 0 12px #00e5ff}
 .logo{text-align:center;padding:40px 20px 10px}
 .logo h1{font-size:42px;margin:0;color:#075e54}
 .item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
 .row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
 .msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
 .msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
+.msg.diamondMsg{border:2px solid #00e5ff;background:#e0ffff}
 video{width:100%;background:black;border-radius:10px;margin-top:8px}
 .callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
@@ -24,13 +26,16 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 .hidden{display:none}
 .ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
 .ringbox{background:#ffeb3b;border:3px solid red;padding:12px;border-radius:12px;text-align:center;margin:10px;display:none}
+.diamondBox{background:linear-gradient(135deg,#e0f7fa,#f3e5f5,#fff9c4);border:3px solid #00e5ff;padding:14px;border-radius:14px;text-align:center;margin:10px}
+.diamondBadge{color:#00b0ff;font-weight:bold}
 </style>
 </head>
 <body>
 <div id="splash">
-<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring</p></div>
-<div class="ad">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V6 BACKGROUND RING</small></div>
-<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><p style="text-align:center;font-size:13px;color:#888">V6 - Calls Ring Even When Not In App</p></div>
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring + 💎 Diamond</p></div>
+<div class="diamondBox"><h2>💎 DIAMOND 💎</h2><p>No Ads • Diamond Badge • Diamond Group • VIP Calls</p><p><b>Be a Diamond Member!</b></p></div>
+<div class="ad" id="adSplash">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V7 DIAMOND</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p style="text-align:center;font-size:13px;color:#888">V7 - Diamond + Calls Ring Even When Not In App</p></div>
 </div>
 
 <div id="register" class="hidden">
@@ -60,9 +65,23 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 <input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
 <button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
 
+<!-- DIAMOND SCREEN -->
+<div id="diamond" class="hidden">
+<div class="top">💎 Diamond Membership</div>
+<div class="diamondBox">
+<h1>💎 DIAMOND 💎</h1>
+<p><b>Join Diamond - Be VIP!</b></p>
+<p>✅ No Ads<br>✅ 💎 Badge next to your name<br>✅ Diamond Group Chat Only<br>✅ VIP Voice + Video Calls<br>✅ Your name shines in chats</p>
+<p><b>Price: You decide later</b><br><small>For now, tap below to become Diamond for FREE for testing</small></p>
+<button class="diamond" onclick="becomeDiamond()">💎 BECOME DIAMOND NOW →</button>
+<p id="diamondMsg" style="text-align:center"></p>
+<button class="black" onclick="showScreen('splash')">BACK</button>
+<button class="dark" onclick="showScreen('mainApp');loadAfterLogin()">ENTER APP →</button>
+</div></div>
+
 <div id="next1" class="hidden">
 <div class="top">Welcome!</div>
-<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><p>Your number will be used so friends who have your number can find you.</p><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND - NO ADS!</button><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
 
 <div id="next2" class="hidden">
 <div class="top">Invite Friends</div>
@@ -70,8 +89,9 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 
 <div id="mainApp" class="hidden">
 <div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
-<div class="ad">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
-<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
+<div class="ad" id="adMain">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+<div class="diamondBox" id="diamondBanner" style="display:none"><h3>💎 YOU ARE DIAMOND 💎</h3><p>No Ads • VIP • Diamond Group Unlocked</p></div>
+<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><button class="diamond" onclick="showScreen('diamond')">💎 DIAMOND</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
 <div class="ringbox" id="incomingBox"><h2>📞 INCOMING CALL!</h2><p id="incomingText">Someone is calling...</p><button onclick="acceptCallFromPopup()" style="background:#25d366">✅ ANSWER</button><button onclick="declineCallPopup()" style="background:red">❌ DECLINE</button></div>
 
 <div id="tab-chats">
@@ -82,6 +102,7 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 <p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp.</p>
 <div id="userList">Loading...</div></div>
 <div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" style="border:3px solid #00e5ff" onclick="openChat('diamond-group','💎 Diamond Group - VIP Only')"><b>💎 Diamond Group - VIP Only</b><br><span>Only Diamond Members • Tap to chat</span></div>
 <div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
 </div>
 
@@ -97,7 +118,7 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 </div>
 
 <div id="tab-me" class="hidden">
-<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p id="myDiamondStatus"></p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
 </div>
 
 <div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
@@ -111,14 +132,13 @@ import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapsh
 const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
 const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
 let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+let isDiamond=false;
 const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
 
-// BACKGROUND RING - LIKE WHATSAPP
 window.enableBackgroundRing=async function(){
   try{
     if("Notification" in window){ const p=await Notification.requestPermission(); if(p==="granted"){ document.getElementById('ringMsg')&&(document.getElementById('ringMsg').innerText="✅ Background Ring ON! Keep Data ON!"); document.getElementById('ringMsg2')&&(document.getElementById('ringMsg2').innerText="✅ Background Ring ON! Keep Data ON!"); new Notification("Private Chats 🔔",{body:"Background Ring is ON! You will hear calls even when not in app.",vibrate:[200,100,200]}); } else { alert("Please tap ALLOW for Notifications, otherwise phone will not ring in background!"); } }
     if(navigator.vibrate) navigator.vibrate([200,100,200]);
-    // Keep listening even when tab in background
     if('serviceWorker' in navigator){ const swCode=`self.addEventListener('notificationclick',e=>{e.notification.close(); e.waitUntil(clients.openWindow('${APP_LINK}'))})`; const blob=new Blob([swCode],{type:'application/javascript'}); await navigator.serviceWorker.register(URL.createObjectURL(blob)); }
   }catch(e){ alert("Ring enabled! "+e.message); }
 }
@@ -137,35 +157,46 @@ function ringPhone(callerName, type){
 window.acceptCallFromPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); switchTab('calls'); acceptCall(); }
 window.declineCallPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); endCall(); }
 
-window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+// DIAMOND FUNCTIONS
+window.becomeDiamond=async function(){
+  isDiamond=true;
+  document.getElementById('diamondMsg').innerText="🎉 CONGRATS! You are now DIAMOND 💎";
+  if(myUid){ try{ await updateDoc(doc(db,"users",myUid),{diamond:true}); }catch(e){} }
+  applyDiamondUI();
+  setTimeout(()=>{ showScreen('mainApp'); loadAfterLogin(); },1200);
+}
+function applyDiamondUI(){
+  if(isDiamond){
+    document.getElementById('diamondBanner')&&(document.getElementById('diamondBanner').style.display="block");
+    document.getElementById('adSplash')&&(document.getElementById('adSplash').style.display="none");
+    document.getElementById('adMain')&&(document.getElementById('adMain').style.display="none");
+    document.getElementById('myDiamondStatus')&&(document.getElementById('myDiamondStatus').innerHTML="<b>💎 Status: DIAMOND MEMBER</b>");
+    if(myName) document.getElementById('myNameTop').innerText=myName+" 💎";
+  }
+}
+function diamondTag(u){ return (u && u.diamond) ? " 💎" : ""; }
+
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp','diamond'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
 window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
-window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,diamond:false,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
 window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
 window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
 window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
-window.doLogout=async function(){await signOut(auth); showScreen('splash');}
-onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; document.getElementById('myNameTop').innerText=myName; loadUsers(); listenForCalls(); loadPosts();} }});
-async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; document.getElementById('myNameTop').innerText=myName;} loadUsers(); listenForCalls(); loadPosts(); }
+window.doLogout=async function(){await signOut(auth); isDiamond=false; showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI(); loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI();} loadUsers(); listenForCalls(); loadPosts(); }
 window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
-window.inviteFriend=function(){ const text="Join my Private Chats App! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
-window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! 💎 Diamond Available! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+diamondTag(u)+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
 window.openChatById=function(uid,name){ openChat(uid,name); }
-async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name}${diamondTag(u)} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
 window.startCallById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(false, window._friends[uid]||"Friend"); }
 window.startVideoById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(true, window._friends[uid]||"Friend"); }
-window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } currentFriendUid=otherUid; currentChatId=otherUid==='main-group'?'main-group':[myUid,otherUid].sort().join("_"); document.getElementById('chatTitle').innerText=title; document.getElementById('chatbox').style.display="block"; document.getElementById('chatbox').scrollIntoView({behavior:'smooth'}); const q=query(collection(db,"chats",currentChatId,"messages"),orderBy("time")); onSnapshot(q,(snap)=>{let h=""; snap.forEach(d=>{const m=d.data(); h+=`<div class="msg ${m.sender===myUid?'me':''}"><b>${m.senderName}</b><br>${m.text}</div>`}); document.getElementById('msgs').innerHTML=h||"<p style='text-align:center;color:#888'>No messages yet. Say Hello! 👋</p>"; document.getElementById('msgs').scrollTop=99999;}); }catch(e){ alert("Chat error: "+e.message); } }
-window.sendMsg=async function(){ const t=document.getElementById('msgInput').value; if(!t) return; if(!myUid){alert("Please login again"); return;} await addDoc(collection(db,"chats",currentChatId,"messages"),{text:t,sender:myUid,senderName:myName,time:Date.now()}); document.getElementById('msgInput').value=""; }
-window.closeChat=function(){document.getElementById('chatbox').style.display="none";}
-window.doPost=async function(){ const t=document.getElementById('postInput').value; if(!t) return; await addDoc(collection(db,"posts"),{text:t,by:myName,uid:myUid,time:Date.now()}); document.getElementById('postInput').value=""; loadPosts(); }
-function loadPosts(){ const q=query(collection(db,"posts"),orderBy("time","desc")); onSnapshot(q,(snap)=>{let h=""; snap.forEach(d=>{const p=d.data(); h+=`<div class="item"><b>${p.by}</b><span>${p.text}</span></div>`}); document.getElementById('postList').innerHTML=h||"No posts yet";}); }
-window.showMe=function(){ document.getElementById('myProfile').innerHTML=`<p><b>Name:</b> ${myData.name||''}</p><p><b>Phone:</b> ${myData.phone||''}</p><p><b>Country:</b> ${myData.country||''}</p><p><b>Email:</b> ${myData.email||''}</p>`; }
-const servers={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
-async function createPC(callId){ pc=new RTCPeerConnection(servers); localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:isVideo}); document.getElementById('localVideo').srcObject=localStream; localStream.getTracks().forEach(t=>pc.addTrack(t,localStream)); pc.ontrack=e=>{document.getElementById('remoteVideo').srcObject=e.streams[0]}; pc.onicecandidate=e=>{if(e.candidate) addDoc(collection(db,"calls",callId,"candidates"),{candidate:e.candidate.toJSON(),from:myUid})}; return pc; }
-window.startCall=async function(video,name){ try{ isVideo=video; document.getElementById('callbox').style.display="block"; document.getElementById('callTitle').innerText=(video?"📹 Video Calling ":"📞 Voice Calling ")+(name||"")+"... Waiting for them to ACCEPT."; document.getElementById('callbox').scrollIntoView({behavior:'smooth'}); const callDoc=await addDoc(collection(db,"calls"),{from:myUid,fromName:myName,to:currentFriendUid,type:video?"video":"voice",status:"ringing",time:Date.now()}); currentCallId=callDoc.id; await createPC(currentCallId); const offer=await pc.createOffer(); await pc.setLocalDescription(offer); <!DOCTYPE html>
+window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } if(otherUid==='diamond-group' && !isDiamond){ alert("💎 This group i<!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Private Chats V6 - Background Ring</title>
+<title>Private Chats V7 - Diamond</title>
 <style>
 body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
 .top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
@@ -173,12 +204,14 @@ body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
 input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
 button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
 button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff} button.orange{background:#ff9800}
+button.diamond{background:linear-gradient(45deg,#00e5ff,#7c4dff,#ff00e5);box-shadow:0 0 12px #00e5ff}
 .logo{text-align:center;padding:40px 20px 10px}
 .logo h1{font-size:42px;margin:0;color:#075e54}
 .item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
 .row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
 .msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
 .msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
+.msg.diamondMsg{border:2px solid #00e5ff;background:#e0ffff}
 video{width:100%;background:black;border-radius:10px;margin-top:8px}
 .callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
 .bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
@@ -187,13 +220,16 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 .hidden{display:none}
 .ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
 .ringbox{background:#ffeb3b;border:3px solid red;padding:12px;border-radius:12px;text-align:center;margin:10px;display:none}
+.diamondBox{background:linear-gradient(135deg,#e0f7fa,#f3e5f5,#fff9c4);border:3px solid #00e5ff;padding:14px;border-radius:14px;text-align:center;margin:10px}
+.diamondBadge{color:#00b0ff;font-weight:bold}
 </style>
 </head>
 <body>
 <div id="splash">
-<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring</p></div>
-<div class="ad">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V6 BACKGROUND RING</small></div>
-<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><p style="text-align:center;font-size:13px;color:#888">V6 - Calls Ring Even When Not In App</p></div>
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring + 💎 Diamond</p></div>
+<div class="diamondBox"><h2>💎 DIAMOND 💎</h2><p>No Ads • Diamond Badge • Diamond Group • VIP Calls</p><p><b>Be a Diamond Member!</b></p></div>
+<div class="ad" id="adSplash">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V7 DIAMOND</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p style="text-align:center;font-size:13px;color:#888">V7 - Diamond + Calls Ring Even When Not In App</p></div>
 </div>
 
 <div id="register" class="hidden">
@@ -223,9 +259,23 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 <input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
 <button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
 
+<!-- DIAMOND SCREEN -->
+<div id="diamond" class="hidden">
+<div class="top">💎 Diamond Membership</div>
+<div class="diamondBox">
+<h1>💎 DIAMOND 💎</h1>
+<p><b>Join Diamond - Be VIP!</b></p>
+<p>✅ No Ads<br>✅ 💎 Badge next to your name<br>✅ Diamond Group Chat Only<br>✅ VIP Voice + Video Calls<br>✅ Your name shines in chats</p>
+<p><b>Price: You decide later</b><br><small>For now, tap below to become Diamond for FREE for testing</small></p>
+<button class="diamond" onclick="becomeDiamond()">💎 BECOME DIAMOND NOW →</button>
+<p id="diamondMsg" style="text-align:center"></p>
+<button class="black" onclick="showScreen('splash')">BACK</button>
+<button class="dark" onclick="showScreen('mainApp');loadAfterLogin()">ENTER APP →</button>
+</div></div>
+
 <div id="next1" class="hidden">
 <div class="top">Welcome!</div>
-<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><p>Your number will be used so friends who have your number can find you.</p><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND - NO ADS!</button><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
 
 <div id="next2" class="hidden">
 <div class="top">Invite Friends</div>
@@ -233,8 +283,9 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 
 <div id="mainApp" class="hidden">
 <div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
-<div class="ad">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
-<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
+<div class="ad" id="adMain">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+<div class="diamondBox" id="diamondBanner" style="display:none"><h3>💎 YOU ARE DIAMOND 💎</h3><p>No Ads • VIP • Diamond Group Unlocked</p></div>
+<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><button class="diamond" onclick="showScreen('diamond')">💎 DIAMOND</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
 <div class="ringbox" id="incomingBox"><h2>📞 INCOMING CALL!</h2><p id="incomingText">Someone is calling...</p><button onclick="acceptCallFromPopup()" style="background:#25d366">✅ ANSWER</button><button onclick="declineCallPopup()" style="background:red">❌ DECLINE</button></div>
 
 <div id="tab-chats">
@@ -245,6 +296,7 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 <p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp.</p>
 <div id="userList">Loading...</div></div>
 <div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" style="border:3px solid #00e5ff" onclick="openChat('diamond-group','💎 Diamond Group - VIP Only')"><b>💎 Diamond Group - VIP Only</b><br><span>Only Diamond Members • Tap to chat</span></div>
 <div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
 </div>
 
@@ -260,7 +312,7 @@ video{width:100%;background:black;border-radius:10px;margin-top:8px}
 </div>
 
 <div id="tab-me" class="hidden">
-<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p id="myDiamondStatus"></p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
 </div>
 
 <div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
@@ -274,14 +326,13 @@ import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapsh
 const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
 const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
 let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+let isDiamond=false;
 const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
 
-// BACKGROUND RING - LIKE WHATSAPP
 window.enableBackgroundRing=async function(){
   try{
     if("Notification" in window){ const p=await Notification.requestPermission(); if(p==="granted"){ document.getElementById('ringMsg')&&(document.getElementById('ringMsg').innerText="✅ Background Ring ON! Keep Data ON!"); document.getElementById('ringMsg2')&&(document.getElementById('ringMsg2').innerText="✅ Background Ring ON! Keep Data ON!"); new Notification("Private Chats 🔔",{body:"Background Ring is ON! You will hear calls even when not in app.",vibrate:[200,100,200]}); } else { alert("Please tap ALLOW for Notifications, otherwise phone will not ring in background!"); } }
     if(navigator.vibrate) navigator.vibrate([200,100,200]);
-    // Keep listening even when tab in background
     if('serviceWorker' in navigator){ const swCode=`self.addEventListener('notificationclick',e=>{e.notification.close(); e.waitUntil(clients.openWindow('${APP_LINK}'))})`; const blob=new Blob([swCode],{type:'application/javascript'}); await navigator.serviceWorker.register(URL.createObjectURL(blob)); }
   }catch(e){ alert("Ring enabled! "+e.message); }
 }
@@ -300,28 +351,815 @@ function ringPhone(callerName, type){
 window.acceptCallFromPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); switchTab('calls'); acceptCall(); }
 window.declineCallPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); endCall(); }
 
-window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+// DIAMOND FUNCTIONS
+window.becomeDiamond=async function(){
+  isDiamond=true;
+  document.getElementById('diamondMsg').innerText="🎉 CONGRATS! You are now DIAMOND 💎";
+  if(myUid){ try{ await updateDoc(doc(db,"users",myUid),{diamond:true}); }catch(e){} }
+  applyDiamondUI();
+  setTimeout(()=>{ showScreen('mainApp'); loadAfterLogin(); },1200);
+}
+function applyDiamondUI(){
+  if(isDiamond){
+    document.getElementById('diamondBanner')&&(document.getElementById('diamondBanner').style.display="block");
+    document.getElementById('adSplash')&&(document.getElementById('adSplash').style.display="none");
+    document.getElementById('adMain')&&(document.getElementById('adMain').style.display="none");
+    document.getElementById('myDiamondStatus')&&(document.getElementById('myDiamondStatus').innerHTML="<b>💎 Status: DIAMOND MEMBER</b>");
+    if(myName) document.getElementById('myNameTop').innerText=myName+" 💎";
+  }
+}
+function diamondTag(u){ return (u && u.diamond) ? " 💎" : ""; }
+
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp','diamond'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
 window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
-window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,diamond:false,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
 window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
 window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
 window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
-window.doLogout=async function(){await signOut(auth); showScreen('splash');}
-onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; document.getElementById('myNameTop').innerText=myName; loadUsers(); listenForCalls(); loadPosts();} }});
-async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; document.getElementById('myNameTop').innerText=myName;} loadUsers(); listenForCalls(); loadPosts(); }
+window.doLogout=async function(){await signOut(auth); isDiamond=false; showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI(); loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI();} loadUsers(); listenForCalls(); loadPosts(); }
 window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
-window.inviteFriend=function(){ const text="Join my Private Chats App! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
-window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! 💎 Diamond Available! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+diamondTag(u)+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
 window.openChatById=function(uid,name){ openChat(uid,name); }
-async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name}${diamondTag(u)} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
 window.startCallById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(false, window._friends[uid]||"Friend"); }
 window.startVideoById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(true, window._friends[uid]||"Friend"); }
-window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } currentFriendUid=otherUid; currentChatId=otherUid==='main-group'?'main-group':[myUid,otherUid].sort().join("_"); document.getElementById('chatTitle').innerText=title; document.getElementById('chatbox').style.display="block"; document.getElementById('chatbox').scrollIntoView({behavior:'smooth'}); const q=query(collection(db,"chats",currentChatId,"messages"),orderBy("time")); onSnapshot(q,(snap)=>{let h=""; snap.forEach(d=>{const m=d.data(); h+=`<div class="msg ${m.sender===myUid?'me':''}"><b>${m.senderName}</b><br>${m.text}</div>`}); document.getElementById('msgs').innerHTML=h||"<p style='text-align:center;color:#888'>No messages yet. Say Hello! 👋</p>"; document.getElementById('msgs').scrollTop=99999;}); }catch(e){ alert("Chat error: "+e.message); } }
-window.sendMsg=async function(){ const t=document.getElementById('msgInput').value; if(!t) return; if(!myUid){alert("Please login again"); return;} await addDoc(collection(db,"chats",currentChatId,"messages"),{text:t,sender:myUid,senderName:myName,time:Date.now()}); document.getElementById('msgInput').value=""; }
-window.closeChat=function(){document.getElementById('chatbox').style.display="none";}
-window.doPost=async function(){ const t=document.getElementById('postInput').value; if(!t) return; await addDoc(collection(db,"posts"),{text:t,by:myName,uid:myUid,time:Date.now()}); document.getElementById('postInput').value=""; loadPosts(); }
-function loadPosts(){ const q=query(collection(db,"posts"),orderBy("time","desc")); onSnapshot(q,(snap)=>{let h=""; snap.forEach(d=>{const p=d.data(); h+=`<div class="item"><b>${p.by}</b><span>${p.text}</span></div>`}); document.getElementById('postList').innerHTML=h||"No posts yet";}); }
-window.showMe=function(){ document.getElementById('myProfile').innerHTML=`<p><b>Name:</b> ${myData.name||''}</p><p><b>Phone:</b> ${myData.phone||''}</p><p><b>Country:</b> ${myData.country||''}</p><p><b>Email:</b> ${myData.email||''}</p>`; }
-const servers={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
-async function createPC(callId){ pc=new RTCPeerConnection(servers); localStream=await navigator.mediaDevices.getUserMedia({audio:true,video:isVideo}); document.getElementById('localVideo').srcObject=localStream; localStream.getTracks().forEach(t=>pc.addTrack(t,localStream)); pc.ontrack=e=>{document.getElementById('remoteVideo').srcObject=e.streams[0]}; pc.onicecandidate=e=>{if(e.candidate) addDoc(collection(db,"calls",callId,"candidates"),{candidate:e.candidate.toJSON(),from:myUid})}; return pc; }
-window.startCall=async function(video,name){ try{ isVideo=video; document.getElementById('callbox').style.display="block"; document.getElementById('callTitle').innerText=(video?"📹 Video Calling ":"📞 Voice Calling ")+(name||"")+"... Waiting for them to ACCEPT."; document.getElementById('callbox').scrollIntoView({behavior:'smooth'}); const callDoc=await addDoc(collection(db,"calls"),{from:myUid,fromName:myName,to:currentFriendUid,type:video?"video":"voice",status:"ringing",time:Date.now()}); currentCallId=callDoc.id; await createPC(currentCallId); const offer=await pc.createOffer(); await pc.setLocalDescription(offer); 
+window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } if(otherUid==='diamond-group' && !isDiamond){ alert("💎 This group i<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private Chats V7 - Diamond</title>
+<style>
+body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
+.top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
+.box{background:white;margin:10px;padding:14px;border-radius:12px}
+input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
+button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff} button.orange{background:#ff9800}
+button.diamond{background:linear-gradient(45deg,#00e5ff,#7c4dff,#ff00e5);box-shadow:0 0 12px #00e5ff}
+.logo{text-align:center;padding:40px 20px 10px}
+.logo h1{font-size:42px;margin:0;color:#075e54}
+.item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
+.row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
+.msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
+.msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
+.msg.diamondMsg{border:2px solid #00e5ff;background:#e0ffff}
+video{width:100%;background:black;border-radius:10px;margin-top:8px}
+.callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
+.bottom div{flex:1;text-align:center;padding:12px 2px;font-weight:bold;font-size:13px;cursor:pointer;color:#888}
+.bottom div.on{color:#075e54;border-top:3px solid #075e54}
+.hidden{display:none}
+.ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
+.ringbox{background:#ffeb3b;border:3px solid red;padding:12px;border-radius:12px;text-align:center;margin:10px;display:none}
+.diamondBox{background:linear-gradient(135deg,#e0f7fa,#f3e5f5,#fff9c4);border:3px solid #00e5ff;padding:14px;border-radius:14px;text-align:center;margin:10px}
+.diamondBadge{color:#00b0ff;font-weight:bold}
+</style>
+</head>
+<body>
+<div id="splash">
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring + 💎 Diamond</p></div>
+<div class="diamondBox"><h2>💎 DIAMOND 💎</h2><p>No Ads • Diamond Badge • Diamond Group • VIP Calls</p><p><b>Be a Diamond Member!</b></p></div>
+<div class="ad" id="adSplash">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V7 DIAMOND</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p style="text-align:center;font-size:13px;color:#888">V7 - Diamond + Calls Ring Even When Not In App</p></div>
+</div>
+
+<div id="register" class="hidden">
+<div class="top">Create Account</div>
+<div class="box">
+<select id="country"><option value="">Choose Country</option><option>South Africa</option><option>Lesotho</option><option>Zimbabwe</option><option>Botswana</option><option>Eswatini</option><option>Namibia</option><option>Mozambique</option><option>Zambia</option><option>Malawi</option><option>Nigeria</option><option>Kenya</option><option>Other</option></select>
+<input id="rName" placeholder="Full Name">
+<input id="rPhone" placeholder="Phone e.g +27681381702">
+<input id="rEmail" placeholder="Email">
+<input id="rPass" type="password" placeholder="Password">
+<button onclick="doRegister()">CREATE ACCOUNT → VERIFY</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="rMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="login" class="hidden">
+<div class="top">Login</div>
+<div class="box">
+<input id="lEmail" placeholder="Email">
+<input id="lPass" type="password" placeholder="Password">
+<button class="dark" onclick="doLogin()">LOGIN</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="lMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="verify" class="hidden">
+<div class="top">Verification</div>
+<div class="box"><h3>Enter 6-digit Code</h3><p>For testing, your code is:</p><h2 id="showCode" style="text-align:center;color:#075e54;letter-spacing:5px">------</h2>
+<input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
+<button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
+
+<!-- DIAMOND SCREEN -->
+<div id="diamond" class="hidden">
+<div class="top">💎 Diamond Membership</div>
+<div class="diamondBox">
+<h1>💎 DIAMOND 💎</h1>
+<p><b>Join Diamond - Be VIP!</b></p>
+<p>✅ No Ads<br>✅ 💎 Badge next to your name<br>✅ Diamond Group Chat Only<br>✅ VIP Voice + Video Calls<br>✅ Your name shines in chats</p>
+<p><b>Price: You decide later</b><br><small>For now, tap below to become Diamond for FREE for testing</small></p>
+<button class="diamond" onclick="becomeDiamond()">💎 BECOME DIAMOND NOW →</button>
+<p id="diamondMsg" style="text-align:center"></p>
+<button class="black" onclick="showScreen('splash')">BACK</button>
+<button class="dark" onclick="showScreen('mainApp');loadAfterLogin()">ENTER APP →</button>
+</div></div>
+
+<div id="next1" class="hidden">
+<div class="top">Welcome!</div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND - NO ADS!</button><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+
+<div id="next2" class="hidden">
+<div class="top">Invite Friends</div>
+<div class="box"><h2>Invite Your Friends!</h2><p>Mpho: You already have account, just LOGIN next time. No need to create again!</p><button class="blue" onclick="inviteFriend()">📩 INVITE FRIENDS - COPY LINK</button><p id="inviteMsg" style="text-align:center"></p><button class="dark" onclick="enterApp()">ENTER APP →</button></div></div>
+
+<div id="mainApp" class="hidden">
+<div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
+<div class="ad" id="adMain">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+<div class="diamondBox" id="diamondBanner" style="display:none"><h3>💎 YOU ARE DIAMOND 💎</h3><p>No Ads • VIP • Diamond Group Unlocked</p></div>
+<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><button class="diamond" onclick="showScreen('diamond')">💎 DIAMOND</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
+<div class="ringbox" id="incomingBox"><h2>📞 INCOMING CALL!</h2><p id="incomingText">Someone is calling...</p><button onclick="acceptCallFromPopup()" style="background:#25d366">✅ ANSWER</button><button onclick="declineCallPopup()" style="background:red">❌ DECLINE</button></div>
+
+<div id="tab-chats">
+<div class="box"><h3>Chats</h3>
+<button class="blue" onclick="showAddFriend()">➕ ADD FRIEND BY PHONE NUMBER</button>
+<button onclick="inviteFriend()">📩 INVITE FRIENDS</button>
+<div id="addFriendBox" class="hidden"><input id="friendPhone" placeholder="Type friend phone e.g +27..."><button class="dark" onclick="doAddFriend()">SEARCH & ADD FRIEND</button><p id="addMsg"></p></div>
+<p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp.</p>
+<div id="userList">Loading...</div></div>
+<div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" style="border:3px solid #00e5ff" onclick="openChat('diamond-group','💎 Diamond Group - VIP Only')"><b>💎 Diamond Group - VIP Only</b><br><span>Only Diamond Members • Tap to chat</span></div>
+<div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
+</div>
+
+<div id="tab-calls" class="hidden">
+<div class="box"><h3>Calls - Real Voice & Video</h3><div id="callUserList">Loading...</div></div>
+<div class="box"><h3>Group Call</h3><button onclick="startGroupCall()">🎥 START GROUP VIDEO CALL</button><button class="dark" onclick="startGroupCallVoice()">📞 START GROUP VOICE CALL</button></div>
+<div class="callbox" id="callbox"><h3 id="callTitle">Calling...</h3><video id="localVideo" autoplay muted playsinline></video><video id="remoteVideo" autoplay playsinline></video><div class="row"><button onclick="acceptCall()" style="background:#25d366">✅ ACCEPT</button><button onclick="endCall()" style="background:red">❌ END</button></div></div>
+</div>
+
+<div id="tab-post" class="hidden">
+<div class="box"><h3>Post / Insert</h3><input id="postInput" placeholder="What do you want to post?"><button onclick="doPost()">POST</button></div>
+<div class="box"><h3>All Posts</h3><div id="postList">No posts yet</div></div>
+</div>
+
+<div id="tab-me" class="hidden">
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p id="myDiamondStatus"></p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+</div>
+
+<div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
+</div>
+<audio id="ringtone" loop><source src="https://actions.google.com/sounds/v1/alarms/phone_call.ogg" type="audio/ogg"></audio>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapshot, addDoc, getDocs, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+let isDiamond=false;
+const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
+
+window.enableBackgroundRing=async function(){
+  try{
+    if("Notification" in window){ const p=await Notification.requestPermission(); if(p==="granted"){ document.getElementById('ringMsg')&&(document.getElementById('ringMsg').innerText="✅ Background Ring ON! Keep Data ON!"); document.getElementById('ringMsg2')&&(document.getElementById('ringMsg2').innerText="✅ Background Ring ON! Keep Data ON!"); new Notification("Private Chats 🔔",{body:"Background Ring is ON! You will hear calls even when not in app.",vibrate:[200,100,200]}); } else { alert("Please tap ALLOW for Notifications, otherwise phone will not ring in background!"); } }
+    if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    if('serviceWorker' in navigator){ const swCode=`self.addEventListener('notificationclick',e=>{e.notification.close(); e.waitUntil(clients.openWindow('${APP_LINK}'))})`; const blob=new Blob([swCode],{type:'application/javascript'}); await navigator.serviceWorker.register(URL.createObjectURL(blob)); }
+  }catch(e){ alert("Ring enabled! "+e.message); }
+}
+function ringPhone(callerName, type){
+  try{
+    const audio=document.getElementById('ringtone'); audio.play().catch(()=>{});
+    if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
+    document.getElementById('incomingBox').style.display="block";
+    document.getElementById('incomingText').innerText=callerName+" is calling you - "+type+" - TAP ANSWER!";
+    document.getElementById('incomingBox').scrollIntoView({behavior:'smooth'});
+    if(document.hidden && "Notification" in window && Notification.permission==="granted"){
+      new Notification("📞 "+callerName+" is calling you!",{body:"Tap to ANSWER - Private Chats",vibrate:[500,200,500],requireInteraction:true});
+    }
+  }catch(e){}
+}
+window.acceptCallFromPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); switchTab('calls'); acceptCall(); }
+window.declineCallPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); endCall(); }
+
+// DIAMOND FUNCTIONS
+window.becomeDiamond=async function(){
+  isDiamond=true;
+  document.getElementById('diamondMsg').innerText="🎉 CONGRATS! You are now DIAMOND 💎";
+  if(myUid){ try{ await updateDoc(doc(db,"users",myUid),{diamond:true}); }catch(e){} }
+  applyDiamondUI();
+  setTimeout(()=>{ showScreen('mainApp'); loadAfterLogin(); },1200);
+}
+function applyDiamondUI(){
+  if(isDiamond){
+    document.getElementById('diamondBanner')&&(document.getElementById('diamondBanner').style.display="block");
+    document.getElementById('adSplash')&&(document.getElementById('adSplash').style.display="none");
+    document.getElementById('adMain')&&(document.getElementById('adMain').style.display="none");
+    document.getElementById('myDiamondStatus')&&(document.getElementById('myDiamondStatus').innerHTML="<b>💎 Status: DIAMOND MEMBER</b>");
+    if(myName) document.getElementById('myNameTop').innerText=myName+" 💎";
+  }
+}
+function diamondTag(u){ return (u && u.diamond) ? " 💎" : ""; }
+
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp','diamond'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,diamond:false,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
+window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
+window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
+window.doLogout=async function(){await signOut(auth); isDiamond=false; showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI(); loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(d<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private Chats V7 - Diamond</title>
+<style>
+body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
+.top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
+.box{background:white;margin:10px;padding:14px;border-radius:12px}
+input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
+button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff} button.orange{background:#ff9800}
+button.diamond{background:linear-gradient(45deg,#00e5ff,#7c4dff,#ff00e5);box-shadow:0 0 12px #00e5ff}
+.logo{text-align:center;padding:40px 20px 10px}
+.logo h1{font-size:42px;margin:0;color:#075e54}
+.item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
+.row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
+.msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
+.msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
+.msg.diamondMsg{border:2px solid #00e5ff;background:#e0ffff}
+video{width:100%;background:black;border-radius:10px;margin-top:8px}
+.callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
+.bottom div{flex:1;text-align:center;padding:12px 2px;font-weight:bold;font-size:13px;cursor:pointer;color:#888}
+.bottom div.on{color:#075e54;border-top:3px solid #075e54}
+.hidden{display:none}
+.ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
+.ringbox{background:#ffeb3b;border:3px solid red;padding:12px;border-radius:12px;text-align:center;margin:10px;display:none}
+.diamondBox{background:linear-gradient(135deg,#e0f7fa,#f3e5f5,#fff9c4);border:3px solid #00e5ff;padding:14px;border-radius:14px;text-align:center;margin:10px}
+.diamondBadge{color:#00b0ff;font-weight:bold}
+</style>
+</head>
+<body>
+<div id="splash">
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring + 💎 Diamond</p></div>
+<div class="diamondBox"><h2>💎 DIAMOND 💎</h2><p>No Ads • Diamond Badge • Diamond Group • VIP Calls</p><p><b>Be a Diamond Member!</b></p></div>
+<div class="ad" id="adSplash">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V7 DIAMOND</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p style="text-align:center;font-size:13px;color:#888">V7 - Diamond + Calls Ring Even When Not In App</p></div>
+</div>
+
+<div id="register" class="hidden">
+<div class="top">Create Account</div>
+<div class="box">
+<select id="country"><option value="">Choose Country</option><option>South Africa</option><option>Lesotho</option><option>Zimbabwe</option><option>Botswana</option><option>Eswatini</option><option>Namibia</option><option>Mozambique</option><option>Zambia</option><option>Malawi</option><option>Nigeria</option><option>Kenya</option><option>Other</option></select>
+<input id="rName" placeholder="Full Name">
+<input id="rPhone" placeholder="Phone e.g +27681381702">
+<input id="rEmail" placeholder="Email">
+<input id="rPass" type="password" placeholder="Password">
+<button onclick="doRegister()">CREATE ACCOUNT → VERIFY</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="rMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="login" class="hidden">
+<div class="top">Login</div>
+<div class="box">
+<input id="lEmail" placeholder="Email">
+<input id="lPass" type="password" placeholder="Password">
+<button class="dark" onclick="doLogin()">LOGIN</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="lMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="verify" class="hidden">
+<div class="top">Verification</div>
+<div class="box"><h3>Enter 6-digit Code</h3><p>For testing, your code is:</p><h2 id="showCode" style="text-align:center;color:#075e54;letter-spacing:5px">------</h2>
+<input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
+<button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
+
+<!-- DIAMOND SCREEN -->
+<div id="diamond" class="hidden">
+<div class="top">💎 Diamond Membership</div>
+<div class="diamondBox">
+<h1>💎 DIAMOND 💎</h1>
+<p><b>Join Diamond - Be VIP!</b></p>
+<p>✅ No Ads<br>✅ 💎 Badge next to your name<br>✅ Diamond Group Chat Only<br>✅ VIP Voice + Video Calls<br>✅ Your name shines in chats</p>
+<p><b>Price: You decide later</b><br><small>For now, tap below to become Diamond for FREE for testing</small></p>
+<button class="diamond" onclick="becomeDiamond()">💎 BECOME DIAMOND NOW →</button>
+<p id="diamondMsg" style="text-align:center"></p>
+<button class="black" onclick="showScreen('splash')">BACK</button>
+<button class="dark" onclick="showScreen('mainApp');loadAfterLogin()">ENTER APP →</button>
+</div></div>
+
+<div id="next1" class="hidden">
+<div class="top">Welcome!</div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND - NO ADS!</button><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+
+<div id="next2" class="hidden">
+<div class="top">Invite Friends</div>
+<div class="box"><h2>Invite Your Friends!</h2><p>Mpho: You already have account, just LOGIN next time. No need to create again!</p><button class="blue" onclick="inviteFriend()">📩 INVITE FRIENDS - COPY LINK</button><p id="inviteMsg" style="text-align:center"></p><button class="dark" onclick="enterApp()">ENTER APP →</button></div></div>
+
+<div id="mainApp" class="hidden">
+<div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
+<div class="ad" id="adMain">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+<div class="diamondBox" id="diamondBanner" style="display:none"><h3>💎 YOU ARE DIAMOND 💎</h3><p>No Ads • VIP • Diamond Group Unlocked</p></div>
+<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><button class="diamond" onclick="showScreen('diamond')">💎 DIAMOND</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
+<div class="ringbox" id="incomingBox"><h2>📞 INCOMING CALL!</h2><p id="incomingText">Someone is calling...</p><button onclick="acceptCallFromPopup()" style="background:#25d366">✅ ANSWER</button><button onclick="declineCallPopup()" style="background:red">❌ DECLINE</button></div>
+
+<div id="tab-chats">
+<div class="box"><h3>Chats</h3>
+<button class="blue" onclick="showAddFriend()">➕ ADD FRIEND BY PHONE NUMBER</button>
+<button onclick="inviteFriend()">📩 INVITE FRIENDS</button>
+<div id="addFriendBox" class="hidden"><input id="friendPhone" placeholder="Type friend phone e.g +27..."><button class="dark" onclick="doAddFriend()">SEARCH & ADD FRIEND</button><p id="addMsg"></p></div>
+<p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp.</p>
+<div id="userList">Loading...</div></div>
+<div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" style="border:3px solid #00e5ff" onclick="openChat('diamond-group','💎 Diamond Group - VIP Only')"><b>💎 Diamond Group - VIP Only</b><br><span>Only Diamond Members • Tap to chat</span></div>
+<div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
+</div>
+
+<div id="tab-calls" class="hidden">
+<div class="box"><h3>Calls - Real Voice & Video</h3><div id="callUserList">Loading...</div></div>
+<div class="box"><h3>Group Call</h3><button onclick="startGroupCall()">🎥 START GROUP VIDEO CALL</button><button class="dark" onclick="startGroupCallVoice()">📞 START GROUP VOICE CALL</button></div>
+<div class="callbox" id="callbox"><h3 id="callTitle">Calling...</h3><video id="localVideo" autoplay muted playsinline></video><video id="remoteVideo" autoplay playsinline></video><div class="row"><button onclick="acceptCall()" style="background:#25d366">✅ ACCEPT</button><button onclick="endCall()" style="background:red">❌ END</button></div></div>
+</div>
+
+<div id="tab-post" class="hidden">
+<div class="box"><h3>Post / Insert</h3><input id="postInput" placeholder="What do you want to post?"><button onclick="doPost()">POST</button></div>
+<div class="box"><h3>All Posts</h3><div id="postList">No posts yet</div></div>
+</div>
+
+<div id="tab-me" class="hidden">
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p id="myDiamondStatus"></p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+</div>
+
+<div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
+</div>
+<audio id="ringtone" loop><source src="https://actions.google.com/sounds/v1/alarms/phone_call.ogg" type="audio/ogg"></audio>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapshot, addDoc, getDocs, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+let isDiamond=false;
+const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
+
+window.enableBackgroundRing=async function(){
+  try{
+    if("Notification" in window){ const p=await Notification.requestPermission(); if(p==="granted"){ document.getElementById('ringMsg')&&(document.getElementById('ringMsg').innerText="✅ Background Ring ON! Keep Data ON!"); document.getElementById('ringMsg2')&&(document.getElementById('ringMsg2').innerText="✅ Background Ring ON! Keep Data ON!"); new Notification("Private Chats 🔔",{body:"Background Ring is ON! You will hear calls even when not in app.",vibrate:[200,100,200]}); } else { alert("Please tap ALLOW for Notifications, otherwise phone will not ring in background!"); } }
+    if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    if('serviceWorker' in navigator){ const swCode=`self.addEventListener('notificationclick',e=>{e.notification.close(); e.waitUntil(clients.openWindow('${APP_LINK}'))})`; const blob=new Blob([swCode],{type:'application/javascript'}); await navigator.serviceWorker.register(URL.createObjectURL(blob)); }
+  }catch(e){ alert("Ring enabled! "+e.message); }
+}
+function ringPhone(callerName, type){
+  try{
+    const audio=document.getElementById('ringtone'); audio.play().catch(()=>{});
+    if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
+    document.getElementById('incomingBox').style.display="block";
+    document.getElementById('incomingText').innerText=callerName+" is calling you - "+type+" - TAP ANSWER!";
+    document.getElementById('incomingBox').scrollIntoView({behavior:'smooth'});
+    if(document.hidden && "Notification" in window && Notification.permission==="granted"){
+      new Notification("📞 "+callerName+" is calling you!",{body:"Tap to ANSWER - Private Chats",vibrate:[500,200,500],requireInteraction:true});
+    }
+  }catch(e){}
+}
+window.acceptCallFromPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); switchTab('calls'); acceptCall(); }
+window.declineCallPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); endCall(); }
+
+// DIAMOND FUNCTIONS
+window.becomeDiamond=async function(){
+  isDiamond=true;
+  document.getElementById('diamondMsg').innerText="🎉 CONGRATS! You are now DIAMOND 💎";
+  if(myUid){ try{ await updateDoc(doc(db,"users",myUid),{diamond:true}); }catch(e){} }
+  applyDiamondUI();
+  setTimeout(()=>{ showScreen('mainApp'); loadAfterLogin(); },1200);
+}
+function applyDiamondUI(){
+  if(isDiamond){
+    document.getElementById('diamondBanner')&&(document.getElementById('diamondBanner').style.display="block");
+    document.getElementById('adSplash')&&(document.getElementById('adSplash').style.display="none");
+    document.getElementById('adMain')&&(document.getElementById('adMain').style.display="none");
+    document.getElementById('myDiamondStatus')&&(document.getElementById('myDiamondStatus').innerHTML="<b>💎 Status: DIAMOND MEMBER</b>");
+    if(myName) document.getElementById('myNameTop').innerText=myName+" 💎";
+  }
+}
+function diamondTag(u){ return (u && u.diamond) ? " 💎" : ""; }
+
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp','diamond'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,diamond:false,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
+window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
+window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
+window.doLogout=async function(){await signOut(auth); isDiamond=false; showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI(); loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI();} loadUsers(); listenForCalls(); loadPosts(); }
+window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! 💎 Diamond Available! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+diamondTag(u)+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+window.openChatById=function(uid,name){ openChat(uid,name); }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name}${diamondTag(u)} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+window.startCallById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(false, window._friends[uid]||"Friend"); }
+window.startVideoById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(true, window._friends[uid]||"Friend"); }
+window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } if(otherUid==='diamond-group' && !isDiamond){ alert("💎 This group i<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private Chats V7 - Diamond</title>
+<style>
+body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
+.top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
+.box{background:white;margin:10px;padding:14px;border-radius:12px}
+input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
+button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff} button.orange{background:#ff9800}
+button.diamond{background:linear-gradient(45deg,#00e5ff,#7c4dff,#ff00e5);box-shadow:0 0 12px #00e5ff}
+.logo{text-align:center;padding:40px 20px 10px}
+.logo h1{font-size:42px;margin:0;color:#075e54}
+.item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
+.row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
+.msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
+.msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
+.msg.diamondMsg{border:2px solid #00e5ff;background:#e0ffff}
+video{width:100%;background:black;border-radius:10px;margin-top:8px}
+.callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
+.bottom div{flex:1;text-align:center;padding:12px 2px;font-weight:bold;font-size:13px;cursor:pointer;color:#888}
+.bottom div.on{color:#075e54;border-top:3px solid #075e54}
+.hidden{display:none}
+.ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
+.ringbox{background:#ffeb3b;border:3px solid red;padding:12px;border-radius:12px;text-align:center;margin:10px;display:none}
+.diamondBox{background:linear-gradient(135deg,#e0f7fa,#f3e5f5,#fff9c4);border:3px solid #00e5ff;padding:14px;border-radius:14px;text-align:center;margin:10px}
+.diamondBadge{color:#00b0ff;font-weight:bold}
+</style>
+</head>
+<body>
+<div id="splash">
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring + 💎 Diamond</p></div>
+<div class="diamondBox"><h2>💎 DIAMOND 💎</h2><p>No Ads • Diamond Badge • Diamond Group • VIP Calls</p><p><b>Be a Diamond Member!</b></p></div>
+<div class="ad" id="adSplash">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V7 DIAMOND</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p style="text-align:center;font-size:13px;color:#888">V7 - Diamond + Calls Ring Even When Not In App</p></div>
+</div>
+
+<div id="register" class="hidden">
+<div class="top">Create Account</div>
+<div class="box">
+<select id="country"><option value="">Choose Country</option><option>South Africa</option><option>Lesotho</option><option>Zimbabwe</option><option>Botswana</option><option>Eswatini</option><option>Namibia</option><option>Mozambique</option><option>Zambia</option><option>Malawi</option><option>Nigeria</option><option>Kenya</option><option>Other</option></select>
+<input id="rName" placeholder="Full Name">
+<input id="rPhone" placeholder="Phone e.g +27681381702">
+<input id="rEmail" placeholder="Email">
+<input id="rPass" type="password" placeholder="Password">
+<button onclick="doRegister()">CREATE ACCOUNT → VERIFY</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="rMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="login" class="hidden">
+<div class="top">Login</div>
+<div class="box">
+<input id="lEmail" placeholder="Email">
+<input id="lPass" type="password" placeholder="Password">
+<button class="dark" onclick="doLogin()">LOGIN</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="lMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="verify" class="hidden">
+<div class="top">Verification</div>
+<div class="box"><h3>Enter 6-digit Code</h3><p>For testing, your code is:</p><h2 id="showCode" style="text-align:center;color:#075e54;letter-spacing:5px">------</h2>
+<input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
+<button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
+
+<!-- DIAMOND SCREEN -->
+<div id="diamond" class="hidden">
+<div class="top">💎 Diamond Membership</div>
+<div class="diamondBox">
+<h1>💎 DIAMOND 💎</h1>
+<p><b>Join Diamond - Be VIP!</b></p>
+<p>✅ No Ads<br>✅ 💎 Badge next to your name<br>✅ Diamond Group Chat Only<br>✅ VIP Voice + Video Calls<br>✅ Your name shines in chats</p>
+<p><b>Price: You decide later</b><br><small>For now, tap below to become Diamond for FREE for testing</small></p>
+<button class="diamond" onclick="becomeDiamond()">💎 BECOME DIAMOND NOW →</button>
+<p id="diamondMsg" style="text-align:center"></p>
+<button class="black" onclick="showScreen('splash')">BACK</button>
+<button class="dark" onclick="showScreen('mainApp');loadAfterLogin()">ENTER APP →</button>
+</div></div>
+
+<div id="next1" class="hidden">
+<div class="top">Welcome!</div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND - NO ADS!</button><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+
+<div id="next2" class="hidden">
+<div class="top">Invite Friends</div>
+<div class="box"><h2>Invite Your Friends!</h2><p>Mpho: You already have account, just LOGIN next time. No need to create again!</p><button class="blue" onclick="inviteFriend()">📩 INVITE FRIENDS - COPY LINK</button><p id="inviteMsg" style="text-align:center"></p><button class="dark" onclick="enterApp()">ENTER APP →</button></div></div>
+
+<div id="mainApp" class="hidden">
+<div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
+<div class="ad" id="adMain">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+<div class="diamondBox" id="diamondBanner" style="display:none"><h3>💎 YOU ARE DIAMOND 💎</h3><p>No Ads • VIP • Diamond Group Unlocked</p></div>
+<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><button class="diamond" onclick="showScreen('diamond')">💎 DIAMOND</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
+<div class="ringbox" id="incomingBox"><h2>📞 INCOMING CALL!</h2><p id="incomingText">Someone is calling...</p><button onclick="acceptCallFromPopup()" style="background:#25d366">✅ ANSWER</button><button onclick="declineCallPopup()" style="background:red">❌ DECLINE</button></div>
+
+<div id="tab-chats">
+<div class="box"><h3>Chats</h3>
+<button class="blue" onclick="showAddFriend()">➕ ADD FRIEND BY PHONE NUMBER</button>
+<button onclick="inviteFriend()">📩 INVITE FRIENDS</button>
+<div id="addFriendBox" class="hidden"><input id="friendPhone" placeholder="Type friend phone e.g +27..."><button class="dark" onclick="doAddFriend()">SEARCH & ADD FRIEND</button><p id="addMsg"></p></div>
+<p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp.</p>
+<div id="userList">Loading...</div></div>
+<div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" style="border:3px solid #00e5ff" onclick="openChat('diamond-group','💎 Diamond Group - VIP Only')"><b>💎 Diamond Group - VIP Only</b><br><span>Only Diamond Members • Tap to chat</span></div>
+<div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
+</div>
+
+<div id="tab-calls" class="hidden">
+<div class="box"><h3>Calls - Real Voice & Video</h3><div id="callUserList">Loading...</div></div>
+<div class="box"><h3>Group Call</h3><button onclick="startGroupCall()">🎥 START GROUP VIDEO CALL</button><button class="dark" onclick="startGroupCallVoice()">📞 START GROUP VOICE CALL</button></div>
+<div class="callbox" id="callbox"><h3 id="callTitle">Calling...</h3><video id="localVideo" autoplay muted playsinline></video><video id="remoteVideo" autoplay playsinline></video><div class="row"><button onclick="acceptCall()" style="background:#25d366">✅ ACCEPT</button><button onclick="endCall()" style="background:red">❌ END</button></div></div>
+</div>
+
+<div id="tab-post" class="hidden">
+<div class="box"><h3>Post / Insert</h3><input id="postInput" placeholder="What do you want to post?"><button onclick="doPost()">POST</button></div>
+<div class="box"><h3>All Posts</h3><div id="postList">No posts yet</div></div>
+</div>
+
+<div id="tab-me" class="hidden">
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p id="myDiamondStatus"></p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+</div>
+
+<div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
+</div>
+<audio id="ringtone" loop><source src="https://actions.google.com/sounds/v1/alarms/phone_call.ogg" type="audio/ogg"></audio>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapshot, addDoc, getDocs, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+let isDiamond=false;
+const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
+
+window.enableBackgroundRing=async function(){
+  try{
+    if("Notification" in window){ const p=await Notification.requestPermission(); if(p==="granted"){ document.getElementById('ringMsg')&&(document.getElementById('ringMsg').innerText="✅ Background Ring ON! Keep Data ON!"); document.getElementById('ringMsg2')&&(document.getElementById('ringMsg2').innerText="✅ Background Ring ON! Keep Data ON!"); new Notification("Private Chats 🔔",{body:"Background Ring is ON! You will hear calls even when not in app.",vibrate:[200,100,200]}); } else { alert("Please tap ALLOW for Notifications, otherwise phone will not ring in background!"); } }
+    if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    if('serviceWorker' in navigator){ const swCode=`self.addEventListener('notificationclick',e=>{e.notification.close(); e.waitUntil(clients.openWindow('${APP_LINK}'))})`; const blob=new Blob([swCode],{type:'application/javascript'}); await navigator.serviceWorker.register(URL.createObjectURL(blob)); }
+  }catch(e){ alert("Ring enabled! "+e.message); }
+}
+function ringPhone(callerName, type){
+  try{
+    const audio=document.getElementById('ringtone'); audio.play().catch(()=>{});
+    if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
+    document.getElementById('incomingBox').style.display="block";
+    document.getElementById('incomingText').innerText=callerName+" is calling you - "+type+" - TAP ANSWER!";
+    document.getElementById('incomingBox').scrollIntoView({behavior:'smooth'});
+    if(document.hidden && "Notification" in window && Notification.permission==="granted"){
+      new Notification("📞 "+callerName+" is calling you!",{body:"Tap to ANSWER - Private Chats",vibrate:[500,200,500],requireInteraction:true});
+    }
+  }catch(e){}
+}
+window.acceptCallFromPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); switchTab('calls'); acceptCall(); }
+window.declineCallPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); endCall(); }
+
+// DIAMOND FUNCTIONS
+window.becomeDiamond=async function(){
+  isDiamond=true;
+  document.getElementById('diamondMsg').innerText="🎉 CONGRATS! You are now DIAMOND 💎";
+  if(myUid){ try{ await updateDoc(doc(db,"users",myUid),{diamond:true}); }catch(e){} }
+  applyDiamondUI();
+  setTimeout(()=>{ showScreen('mainApp'); loadAfterLogin(); },1200);
+}
+function applyDiamondUI(){
+  if(isDiamond){
+    document.getElementById('diamondBanner')&&(document.getElementById('diamondBanner').style.display="block");
+    document.getElementById('adSplash')&&(document.getElementById('adSplash').style.display="none");
+    document.getElementById('adMain')&&(document.getElementById('adMain').style.display="none");
+    document.getElementById('myDiamondStatus')&&(document.getElementById('myDiamondStatus').innerHTML="<b>💎 Status: DIAMOND MEMBER</b>");
+    if(myName) document.getElementById('myNameTop').innerText=myName+" 💎";
+  }
+}
+function diamondTag(u){ return (u && u.diamond) ? " 💎" : ""; }
+
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp','diamond'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,diamond:false,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
+window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
+window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
+window.doLogout=async function(){await signOut(auth); isDiamond=false; showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI(); loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI();} loadUsers(); listenForCalls(); loadPosts(); }
+window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! 💎 Diamond Available! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+diamondTag(u)+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+window.openChatById=function(uid,name){ openChat(uid,name); }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name}${diamondTag(u)} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+window.startCallById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(false, window._friends[uid]||"Friend"); }
+window.startVideoById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(true, window._friends[uid]||"Friend"); }
+window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } if(otherUid==='diamond-group' && !isDiamond){ alert("💎 This group i<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Private Chats V7 - Diamond</title>
+<style>
+body{margin:0;font-family:Arial;background:#ece5dd;padding-bottom:70px}
+.top{background:#075e54;color:white;padding:14px;font-size:19px;font-weight:bold;text-align:center}
+.box{background:white;margin:10px;padding:14px;border-radius:12px}
+input,select{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:16px;box-sizing:border-box}
+button{width:100%;padding:13px;background:#25d366;border:none;border-radius:8px;color:white;font-size:16px;font-weight:bold;margin-top:7px}
+button.dark{background:#075e54} button.black{background:#333} button.blue{background:#0084ff} button.orange{background:#ff9800}
+button.diamond{background:linear-gradient(45deg,#00e5ff,#7c4dff,#ff00e5);box-shadow:0 0 12px #00e5ff}
+.logo{text-align:center;padding:40px 20px 10px}
+.logo h1{font-size:42px;margin:0;color:#075e54}
+.item{padding:12px;border-bottom:1px solid #eee} .item b{display:block} .item span{color:#666;font-size:13px}
+.row{display:flex;gap:6px;margin-top:6px} .row button{padding:8px;font-size:13px}
+.msgs{height:260px;overflow-y:auto;background:#ece5dd;padding:8px;border-radius:8px}
+.msg{background:white;padding:8px 10px;margin:6px 0;border-radius:8px;max-width:85%} .me{background:#dcf8c6;margin-left:auto}
+.msg.diamondMsg{border:2px solid #00e5ff;background:#e0ffff}
+video{width:100%;background:black;border-radius:10px;margin-top:8px}
+.callbox{background:#111;color:white;padding:12px;border-radius:12px;margin:10px;display:none;text-align:center}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;border-top:1px solid #ddd;z-index:99}
+.bottom div{flex:1;text-align:center;padding:12px 2px;font-weight:bold;font-size:13px;cursor:pointer;color:#888}
+.bottom div.on{color:#075e54;border-top:3px solid #075e54}
+.hidden{display:none}
+.ad{background:#ffeb3b;padding:10px;text-align:center;font-weight:bold;border:2px dashed #075e54;margin:10px;border-radius:10px}
+.ringbox{background:#ffeb3b;border:3px solid red;padding:12px;border-radius:12px;text-align:center;margin:10px;display:none}
+.diamondBox{background:linear-gradient(135deg,#e0f7fa,#f3e5f5,#fff9c4);border:3px solid #00e5ff;padding:14px;border-radius:14px;text-align:center;margin:10px}
+.diamondBadge{color:#00b0ff;font-weight:bold}
+</style>
+</head>
+<body>
+<div id="splash">
+<div class="logo"><h1>🔥 Private<br>Chats</h1><p>Real Chats • Real Calls • Real Video<br>Like WhatsApp + Background Ring + 💎 Diamond</p></div>
+<div class="diamondBox"><h2>💎 DIAMOND 💎</h2><p>No Ads • Diamond Badge • Diamond Group • VIP Calls</p><p><b>Be a Diamond Member!</b></p></div>
+<div class="ad" id="adSplash">📢 AD: PRIVATE CHATS - BY SEETA ALEXIS<br><small>Contact: +27681381702 • Invite your friends! • V7 DIAMOND</small></div>
+<div class="box"><button onclick="showScreen('register')">CREATE ACCOUNT</button><button class="dark" onclick="showScreen('login')">LOGIN - For Mpho, just LOGIN!</button><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p style="text-align:center;font-size:13px;color:#888">V7 - Diamond + Calls Ring Even When Not In App</p></div>
+</div>
+
+<div id="register" class="hidden">
+<div class="top">Create Account</div>
+<div class="box">
+<select id="country"><option value="">Choose Country</option><option>South Africa</option><option>Lesotho</option><option>Zimbabwe</option><option>Botswana</option><option>Eswatini</option><option>Namibia</option><option>Mozambique</option><option>Zambia</option><option>Malawi</option><option>Nigeria</option><option>Kenya</option><option>Other</option></select>
+<input id="rName" placeholder="Full Name">
+<input id="rPhone" placeholder="Phone e.g +27681381702">
+<input id="rEmail" placeholder="Email">
+<input id="rPass" type="password" placeholder="Password">
+<button onclick="doRegister()">CREATE ACCOUNT → VERIFY</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="rMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="login" class="hidden">
+<div class="top">Login</div>
+<div class="box">
+<input id="lEmail" placeholder="Email">
+<input id="lPass" type="password" placeholder="Password">
+<button class="dark" onclick="doLogin()">LOGIN</button>
+<button class="black" onclick="showScreen('splash')">BACK</button><p id="lMsg" style="text-align:center"></p>
+</div></div>
+
+<div id="verify" class="hidden">
+<div class="top">Verification</div>
+<div class="box"><h3>Enter 6-digit Code</h3><p>For testing, your code is:</p><h2 id="showCode" style="text-align:center;color:#075e54;letter-spacing:5px">------</h2>
+<input id="codeInput" placeholder="Enter 6 digit code" maxlength="6">
+<button onclick="doVerify()">VERIFY → NEXT</button><p id="vMsg" style="text-align:center"></p></div></div>
+
+<!-- DIAMOND SCREEN -->
+<div id="diamond" class="hidden">
+<div class="top">💎 Diamond Membership</div>
+<div class="diamondBox">
+<h1>💎 DIAMOND 💎</h1>
+<p><b>Join Diamond - Be VIP!</b></p>
+<p>✅ No Ads<br>✅ 💎 Badge next to your name<br>✅ Diamond Group Chat Only<br>✅ VIP Voice + Video Calls<br>✅ Your name shines in chats</p>
+<p><b>Price: You decide later</b><br><small>For now, tap below to become Diamond for FREE for testing</small></p>
+<button class="diamond" onclick="becomeDiamond()">💎 BECOME DIAMOND NOW →</button>
+<p id="diamondMsg" style="text-align:center"></p>
+<button class="black" onclick="showScreen('splash')">BACK</button>
+<button class="dark" onclick="showScreen('mainApp');loadAfterLogin()">ENTER APP →</button>
+</div></div>
+
+<div id="next1" class="hidden">
+<div class="top">Welcome!</div>
+<div class="box"><h2>Welcome to Private Chats 🔥</h2><p>Real Chats, Real Voice Calls, Real Video Calls - like WhatsApp.</p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND - NO ADS!</button><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING - TAP HERE!</button><p id="ringMsg" style="text-align:center"></p><button onclick="showScreen('next2')">NEXT →</button></div></div>
+
+<div id="next2" class="hidden">
+<div class="top">Invite Friends</div>
+<div class="box"><h2>Invite Your Friends!</h2><p>Mpho: You already have account, just LOGIN next time. No need to create again!</p><button class="blue" onclick="inviteFriend()">📩 INVITE FRIENDS - COPY LINK</button><p id="inviteMsg" style="text-align:center"></p><button class="dark" onclick="enterApp()">ENTER APP →</button></div></div>
+
+<div id="mainApp" class="hidden">
+<div class="top"><span id="topTitle">Private Chats</span> <span id="myNameTop" style="float:right;font-size:14px"></span></div>
+<div class="ad" id="adMain">📢 AD: PRIVATE CHATS BY SEETA ALEXIS • +27681381702<br><small>Invite friends - Share your link!</small></div>
+<div class="diamondBox" id="diamondBanner" style="display:none"><h3>💎 YOU ARE DIAMOND 💎</h3><p>No Ads • VIP • Diamond Group Unlocked</p></div>
+<div class="box"><button class="orange" onclick="enableBackgroundRing()">🔔 ENABLE BACKGROUND RING</button><button class="diamond" onclick="showScreen('diamond')">💎 DIAMOND</button><p id="ringMsg2" style="text-align:center;font-size:13px">Keep Mobile Data ON + Chrome in background. When someone calls, your phone will RING + VIBRATE + POP-UP even if you are not in the app.</p></div>
+<div class="ringbox" id="incomingBox"><h2>📞 INCOMING CALL!</h2><p id="incomingText">Someone is calling...</p><button onclick="acceptCallFromPopup()" style="background:#25d366">✅ ANSWER</button><button onclick="declineCallPopup()" style="background:red">❌ DECLINE</button></div>
+
+<div id="tab-chats">
+<div class="box"><h3>Chats</h3>
+<button class="blue" onclick="showAddFriend()">➕ ADD FRIEND BY PHONE NUMBER</button>
+<button onclick="inviteFriend()">📩 INVITE FRIENDS</button>
+<div id="addFriendBox" class="hidden"><input id="friendPhone" placeholder="Type friend phone e.g +27..."><button class="dark" onclick="doAddFriend()">SEARCH & ADD FRIEND</button><p id="addMsg"></p></div>
+<p style="font-size:13px;color:#666">Friends are found by phone number - like WhatsApp.</p>
+<div id="userList">Loading...</div></div>
+<div class="box" onclick="openChat('main-group','🌍 Private Chats Group')"><b>🌍 Private Chats Group</b><br><span>Group Chat - Tap to chat</span></div>
+<div class="box" style="border:3px solid #00e5ff" onclick="openChat('diamond-group','💎 Diamond Group - VIP Only')"><b>💎 Diamond Group - VIP Only</b><br><span>Only Diamond Members • Tap to chat</span></div>
+<div class="box" id="chatbox" style="display:none"><h3 id="chatTitle">Chat</h3><div class="msgs" id="msgs"></div><input id="msgInput" placeholder="Type message..."><button onclick="sendMsg()">SEND</button><button class="black" onclick="closeChat()">BACK TO CHATS</button></div>
+</div>
+
+<div id="tab-calls" class="hidden">
+<div class="box"><h3>Calls - Real Voice & Video</h3><div id="callUserList">Loading...</div></div>
+<div class="box"><h3>Group Call</h3><button onclick="startGroupCall()">🎥 START GROUP VIDEO CALL</button><button class="dark" onclick="startGroupCallVoice()">📞 START GROUP VOICE CALL</button></div>
+<div class="callbox" id="callbox"><h3 id="callTitle">Calling...</h3><video id="localVideo" autoplay muted playsinline></video><video id="remoteVideo" autoplay playsinline></video><div class="row"><button onclick="acceptCall()" style="background:#25d366">✅ ACCEPT</button><button onclick="endCall()" style="background:red">❌ END</button></div></div>
+</div>
+
+<div id="tab-post" class="hidden">
+<div class="box"><h3>Post / Insert</h3><input id="postInput" placeholder="What do you want to post?"><button onclick="doPost()">POST</button></div>
+<div class="box"><h3>All Posts</h3><div id="postList">No posts yet</div></div>
+</div>
+
+<div id="tab-me" class="hidden">
+<div class="box"><h3>Me - My Profile</h3><div id="myProfile">Loading...</div><p id="myDiamondStatus"></p><button class="diamond" onclick="showScreen('diamond')">💎 BECOME DIAMOND</button><p><b>Your App Link:</b><br>https://seetaalexis977-svg.github.io/private---chats/</p><button class="black" onclick="doLogout()">LOGOUT</button></div>
+</div>
+
+<div class="bottom"><div id="bChats" class="on" onclick="switchTab('chats')">💬<br>CHATS</div><div id="bCalls" onclick="switchTab('calls')">📞<br>CALLS</div><div id="bPost" onclick="switchTab('post')">📝<br>POST</div><div id="bMe" onclick="switchTab('me')">👤<br>ME</div></div>
+</div>
+<audio id="ringtone" loop><source src="https://actions.google.com/sounds/v1/alarms/phone_call.ogg" type="audio/ogg"></audio>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, onSnapshot, addDoc, getDocs, updateDoc, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCTeosLIvoMvpGrN_ECchXY4DFKZpf8jck",authDomain:"private-chats-8a260.firebaseapp.com",projectId:"private-chats-8a260",storageBucket:"private-chats-8a260.firebasestorage.app",messagingSenderId:"531756135269",appId:"1:531756135269:web:b438c25501fca63a9f278c",measurementId:"G-YE67W66CZR"};
+const app=initializeApp(firebaseConfig); const auth=getAuth(app); const db=getFirestore(app);
+let myUid="",myName="",myData={},currentChatId="",currentFriendUid="",currentCallId="",pc=null,localStream=null,isVideo=false,incomingOffer=null,generatedCode="";
+let isDiamond=false;
+const APP_LINK="https://seetaalexis977-svg.github.io/private---chats/";
+
+window.enableBackgroundRing=async function(){
+  try{
+    if("Notification" in window){ const p=await Notification.requestPermission(); if(p==="granted"){ document.getElementById('ringMsg')&&(document.getElementById('ringMsg').innerText="✅ Background Ring ON! Keep Data ON!"); document.getElementById('ringMsg2')&&(document.getElementById('ringMsg2').innerText="✅ Background Ring ON! Keep Data ON!"); new Notification("Private Chats 🔔",{body:"Background Ring is ON! You will hear calls even when not in app.",vibrate:[200,100,200]}); } else { alert("Please tap ALLOW for Notifications, otherwise phone will not ring in background!"); } }
+    if(navigator.vibrate) navigator.vibrate([200,100,200]);
+    if('serviceWorker' in navigator){ const swCode=`self.addEventListener('notificationclick',e=>{e.notification.close(); e.waitUntil(clients.openWindow('${APP_LINK}'))})`; const blob=new Blob([swCode],{type:'application/javascript'}); await navigator.serviceWorker.register(URL.createObjectURL(blob)); }
+  }catch(e){ alert("Ring enabled! "+e.message); }
+}
+function ringPhone(callerName, type){
+  try{
+    const audio=document.getElementById('ringtone'); audio.play().catch(()=>{});
+    if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
+    document.getElementById('incomingBox').style.display="block";
+    document.getElementById('incomingText').innerText=callerName+" is calling you - "+type+" - TAP ANSWER!";
+    document.getElementById('incomingBox').scrollIntoView({behavior:'smooth'});
+    if(document.hidden && "Notification" in window && Notification.permission==="granted"){
+      new Notification("📞 "+callerName+" is calling you!",{body:"Tap to ANSWER - Private Chats",vibrate:[500,200,500],requireInteraction:true});
+    }
+  }catch(e){}
+}
+window.acceptCallFromPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); switchTab('calls'); acceptCall(); }
+window.declineCallPopup=function(){ document.getElementById('incomingBox').style.display="none"; document.getElementById('ringtone').pause(); endCall(); }
+
+// DIAMOND FUNCTIONS
+window.becomeDiamond=async function(){
+  isDiamond=true;
+  document.getElementById('diamondMsg').innerText="🎉 CONGRATS! You are now DIAMOND 💎";
+  if(myUid){ try{ await updateDoc(doc(db,"users",myUid),{diamond:true}); }catch(e){} }
+  applyDiamondUI();
+  setTimeout(()=>{ showScreen('mainApp'); loadAfterLogin(); },1200);
+}
+function applyDiamondUI(){
+  if(isDiamond){
+    document.getElementById('diamondBanner')&&(document.getElementById('diamondBanner').style.display="block");
+    document.getElementById('adSplash')&&(document.getElementById('adSplash').style.display="none");
+    document.getElementById('adMain')&&(document.getElementById('adMain').style.display="none");
+    document.getElementById('myDiamondStatus')&&(document.getElementById('myDiamondStatus').innerHTML="<b>💎 Status: DIAMOND MEMBER</b>");
+    if(myName) document.getElementById('myNameTop').innerText=myName+" 💎";
+  }
+}
+function diamondTag(u){ return (u && u.diamond) ? " 💎" : ""; }
+
+window.showScreen=function(s){['splash','register','login','verify','next1','next2','mainApp','diamond'].forEach(id=>document.getElementById(id).classList.add('hidden')); document.getElementById(s).classList.remove('hidden'); window.scrollTo(0,0);}
+window.switchTab=function(t){['chats','calls','post','me'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('b'+x.charAt(0).toUpperCase()+x.slice(1)).classList.remove('on')}); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('b'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('on'); if(t==='post') loadPosts(); if(t==='me') showMe();}
+window.doRegister=async function(){ const country=document.getElementById('country').value,name=document.getElementById('rName').value,phone=document.getElementById('rPhone').value,email=document.getElementById('rEmail').value,pass=document.getElementById('rPass').value; if(!country||!name||!phone||!email||!pass){document.getElementById('rMsg').innerText="Please fill everything";return;} try{const c=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",c.user.uid),{name,phone,country,email,diamond:false,created:Date.now()}); generatedCode=String(Math.floor(100000+Math.random()*900000)); document.getElementById('showCode').innerText=generatedCode; showScreen('verify');}catch(e){document.getElementById('rMsg').innerText=e.message} }
+window.doVerify=function(){ if(document.getElementById('codeInput').value===generatedCode){ showScreen('next1'); } else { document.getElementById('vMsg').innerText="Wrong code. Code is "+generatedCode; } }
+window.enterApp=function(){ showScreen('mainApp'); loadAfterLogin(); }
+window.doLogin=async function(){ try{await signInWithEmailAndPassword(auth,document.getElementById('lEmail').value,document.getElementById('lPass').value); showScreen('next1');}catch(e){document.getElementById('lMsg').innerText=e.message} }
+window.doLogout=async function(){await signOut(auth); isDiamond=false; showScreen('splash');}
+onAuthStateChanged(auth, async (user)=>{ if(user){ myUid=user.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI(); loadUsers(); listenForCalls(); loadPosts();} }});
+async function loadAfterLogin(){ if(!myUid && auth.currentUser) myUid=auth.currentUser.uid; const s=await getDoc(doc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI();} loadUsers(); listenForCalls(); loadPosts(); }
+window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! 💎 Diamond Available! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+diamondTag(u)+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+window.openChatById=function(uid,name){ openChat(uid,name); }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name}${diamondTag(u)} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+window.startCallById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(false, window._friends[uid]||"Friend"); }
+window.startVideoById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(true, window._friends[uid]||"Friend"); }
+window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } if(otherUid==='diamond-group' && !isDiamond){ alert("💎 This group ioc(db,"users",myUid)); if(s.exists()){myData=s.data(); myName=myData.name; isDiamond=!!myData.diamond; document.getElementById('myNameTop').innerText=myName+diamondTag(myData); applyDiamondUI();} loadUsers(); listenForCalls(); loadPosts(); }
+window.showAddFriend=function(){ document.getElementById('addFriendBox').classList.remove('hidden'); }
+window.inviteFriend=function(){ const text="Join my Private Chats App! 💎 Diamond Available! Create account here: "+APP_LINK; if(navigator.clipboard) navigator.clipboard.writeText(text); const wa="https://wa.me/?text="+encodeURIComponent(text); document.getElementById('inviteMsg')&&(document.getElementById('inviteMsg').innerText="Link copied! Share it with friends!"); window.open(wa,"_blank"); }
+window.doAddFriend=async function(){ const phone=document.getElementById('friendPhone').value.trim(); if(!phone){document.getElementById('addMsg').innerText="Type phone number";return;} const q=query(collection(db,"users"),where("phone","==",phone)); const snap=await getDocs(q); if(snap.empty){document.getElementById('addMsg').innerText="Not found yet. Invite them! They must create account first with that number. Link copied."; inviteFriend(); return;} snap.forEach(d=>{ const u=d.data(); document.getElementById('addMsg').innerText="✅ Found "+u.name+diamondTag(u)+" ("+u.phone+") - You can now CHAT + CALL them below!"; }); loadUsers(); }
+window.openChatById=function(uid,name){ openChat(uid,name); }
+async function loadUsers(){ const q=await getDocs(collection(db,"users")); let html="",html2=""; window._friends={}; q.forEach(d=>{ if(d.id===myUid) return; const u=d.data(); window._friends[d.id]=u.name; const card=`<div class="item"><b>${u.name}${diamondTag(u)} ✅ Friend</b><span>${u.country||''} • ${u.phone}</span><div class="row"><button onclick="window.openChatById('${d.id}','${u.name}')">💬 CHAT</button><button class="dark" onclick="window.startCallById('${d.id}')">📞 VOICE</button><button onclick="window.startVideoById('${d.id}')">🎥 VIDEO</button></div></div>`; html+=card; html2+=card; }); document.getElementById('userList').innerHTML=html||"No friends yet. Press ADD FRIEND or INVITE FRIEND above!"; document.getElementById('callUserList').innerHTML=html2||"No people yet"; }
+window.startCallById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(false, window._friends[uid]||"Friend"); }
+window.startVideoById=function(uid){ switchTab('calls'); currentFriendUid=uid; startCall(true, window._friends[uid]||"Friend"); }
+window.openChat=function(otherUid,title){ try{ if(!myUid){ alert("Please LOGOUT and LOGIN again first! Then press CHAT again."); return; } if(otherUid==='diamond-group' && !isDiamond){ alert("💎 This group i
